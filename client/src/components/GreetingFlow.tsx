@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import { speakHuldah } from "@/lib/tts";
 import { audioManager } from "@/lib/audioManager";
 import { WaveBanner } from "@/components/WaveBanner";
-import gadMainImg from "@assets/Prophet_Gad_in_black_suit._Upscale._1773061244987.jpg";
-import lionImg from "@assets/Lion_logo7_1777761210595.png";
-import breastplateImg from "@assets/Breastplate_logo2_1777761210594.png";
+const gadMainImg = "";
+const lionImg = "";
+const breastplateImg = "";
 import { useLocation } from "wouter";
 
 const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
