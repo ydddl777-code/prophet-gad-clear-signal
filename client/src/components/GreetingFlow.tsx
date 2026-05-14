@@ -4,10 +4,11 @@ import { motion } from "framer-motion";
 import { speakHuldah } from "@/lib/tts";
 import { audioManager } from "@/lib/audioManager";
 import { WaveBanner } from "@/components/WaveBanner";
-const gadMainImg = "";
-const lionImg = "";
-const breastplateImg = "";
 import { useLocation } from "wouter";
+
+const gadMainImg     = "/images/gad-black-suit.jpg";
+const lionImg        = "/images/lion-logo.webp";
+const breastplateImg = "/images/breastplate-logo.webp";
 
 const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
 const BG_COLOR = "hsl(355, 22%, 6%)";
