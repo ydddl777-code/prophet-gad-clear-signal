@@ -1,6 +1,6 @@
 import { useAppState } from "@/lib/appState";
 import { motion } from "framer-motion";
-const gadSuitImg = "";
+const gadSuitImg = "/images/good-gad7.webp";
 
 export function GadCharacter() {
   const { phase, verdict } = useAppState();
