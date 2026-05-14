@@ -1,4 +1,4 @@
-import waveformImg from "@assets/waveform_v5_dark_preview_1777787656877.png";
+const waveformImg = "/images/waveform.png";
 
 const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
 
