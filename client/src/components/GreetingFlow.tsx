@@ -6,19 +6,20 @@ import { audioManager } from "@/lib/audioManager";
 import { WaveBanner } from "@/components/WaveBanner";
 import { useLocation } from "wouter";
 
-const gadMainImg     = "/images/gad-black-suit.jpg";
-const lionImg        = "/images/lion-logo.webp";
-const breastplateImg = "/images/breastplate-logo.webp";
+const gadMainImg = "/images/gad-prophet-kid.jpg";
 
 const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
 const BG_COLOR = "hsl(355, 22%, 6%)";
 
 const HULDAH_GREETING =
-  "I am Prophetess Huldah. Welcome to Clear Signal — the music discernment app for all nations. " +
-  "I am here to guide you through this experience. " +
-  "Submit any song and the prophet will render his verdict. " +
-  "True worship always has a clear signal. " +
-  "When you are ready, press Enter to begin.";
+  "Friend... stranger... welcome. " +
+  "You have arrived at Clear Signal — a place of discernment, not judgment. " +
+  "I am Prophetess Huldah, and I am here to guide you. " +
+  "Before we begin — how would you like to be addressed? " +
+  "You are not required to share your name. " +
+  "But if you do, the Prophet will speak to you directly, " +
+  "and your results will be prepared in your honor. " +
+  "When you are ready, press Enter.";
 
 export function GreetingFlow() {
   const { phase, setPhase, voiceEnabled } = useAppState();
@@ -47,7 +48,7 @@ export function GreetingFlow() {
         fontFamily: ARIAL,
       }}
     >
-      {/* ── Top bar ── */}
+      {/* Top bar */}
       <div
         style={{
           position: "sticky",
@@ -62,36 +63,53 @@ export function GreetingFlow() {
           backdropFilter: "blur(8px)",
         }}
       >
-        <img src={lionImg} alt="Lion" style={{ height: 36, width: 36, objectFit: "contain" }} />
+        <span style={{ fontSize: 28 }} aria-label="Lion">🦁</span>
 
         <div style={{ textAlign: "center" }}>
-          <h1 style={{
-            fontFamily: ARIAL,
-            fontWeight: 800,
-            fontSize: 22,
-            letterSpacing: "0.06em",
-            color: "hsl(40,15%,88%)",
-            margin: 0,
-            lineHeight: 1.1,
-          }}>
-            Clear Signal
-          </h1>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+            <h1 style={{
+              fontFamily: ARIAL,
+              fontWeight: 800,
+              fontSize: 30,
+              letterSpacing: "0.08em",
+              color: "hsl(43,72%,54%)",
+              margin: 0,
+              lineHeight: 1.1,
+            }}>
+              Clear Signal
+            </h1>
+            <span style={{
+              fontSize: 9,
+              fontWeight: 700,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "hsl(270,50%,75%)",
+              background: "hsl(270,30%,18%)",
+              border: "1px solid hsl(270,30%,30%)",
+              borderRadius: 4,
+              padding: "2px 6px",
+              alignSelf: "flex-start",
+              marginTop: 4,
+            }}>
+              BETA
+            </span>
+          </div>
           <p style={{
-            fontSize: 9,
-            letterSpacing: "0.18em",
+            fontSize: 11,
+            letterSpacing: "0.14em",
             textTransform: "uppercase",
             color: "hsl(0,45%,40%)",
             fontFamily: ARIAL,
-            margin: 0,
+            margin: "2px 0 0",
           }}>
-            Remnant Seed LLC &nbsp;·&nbsp; Thread Bare Music
+            PGAI  ·  Remnant Seed LLC
           </p>
         </div>
 
-        <img src={breastplateImg} alt="Breastplate" style={{ height: 36, width: 36, objectFit: "contain" }} />
+        <span style={{ fontSize: 28 }} aria-label="Breastplate">🛡️</span>
       </div>
 
-      {/* ── Page-level nav arrow — far right, vertically centered ── */}
+      {/* Nav arrow */}
       <button
         onClick={() => setPhase("name")}
         title="Skip to name page"
@@ -118,7 +136,7 @@ export function GreetingFlow() {
         ›
       </button>
 
-      {/* ── Main content ── */}
+      {/* Main content */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -133,7 +151,6 @@ export function GreetingFlow() {
           margin: "0 auto",
         }}
       >
-        {/* Photo */}
         <motion.img
           src={gadMainImg}
           alt="Prophet Gad"
@@ -152,18 +169,15 @@ export function GreetingFlow() {
 
         <WaveBanner />
 
-        {/* Body paragraph */}
-        <p
-          style={{
-            fontSize: 14,
-            lineHeight: 1.8,
-            textAlign: "justify",
-            color: "hsl(40, 12%, 72%)",
-            fontFamily: ARIAL,
-            margin: 0,
-            maxWidth: 560,
-          }}
-        >
+        <p style={{
+          fontSize: 14,
+          lineHeight: 1.8,
+          textAlign: "justify",
+          color: "hsl(40, 12%, 72%)",
+          fontFamily: ARIAL,
+          margin: 0,
+          maxWidth: 560,
+        }}>
           In the spirit of the ancient Prophet Gad — commissioned by King David to oversee the
           musicians of the temple — that same discerning spirit is here with us today. Gad
           directed what the Levites sang, when they sang it, how they sang it, the instruments
@@ -173,25 +187,8 @@ export function GreetingFlow() {
           temple.
         </p>
 
-        {/* Scripture block */}
-        <div
-          style={{
-            borderLeft: "3px solid hsl(0, 55%, 38%)",
-            paddingLeft: 14,
-            maxWidth: 540,
-            width: "100%",
-          }}
-        >
-          <p
-            style={{
-              fontSize: 13,
-              fontStyle: "italic",
-              color: "hsl(0, 40%, 60%)",
-              fontFamily: ARIAL,
-              margin: 0,
-              lineHeight: 1.7,
-            }}
-          >
+        <div style={{ borderLeft: "3px solid hsl(0, 55%, 38%)", paddingLeft: 14, maxWidth: 540, width: "100%" }}>
+          <p style={{ fontSize: 13, fontStyle: "italic", color: "hsl(0, 40%, 60%)", fontFamily: ARIAL, margin: 0, lineHeight: 1.7 }}>
             "He stationed the Levites in the temple of the Lord with cymbals,
             harps and lyres in the way prescribed by David and Gad the king's
             seer and Nathan the prophet; this was commanded by the Lord
@@ -199,41 +196,16 @@ export function GreetingFlow() {
           </p>
         </div>
 
-        <p
-          style={{
-            fontSize: 13,
-            fontStyle: "italic",
-            color: "hsl(43, 72%, 54%)",
-            fontFamily: ARIAL,
-            margin: 0,
-            textAlign: "center",
-            letterSpacing: "0.04em",
-          }}
-        >
+        <p style={{ fontSize: 13, fontStyle: "italic", color: "hsl(43, 72%, 54%)", fontFamily: ARIAL, margin: 0, textAlign: "center", letterSpacing: "0.04em" }}>
           True worship always has a clear signal.
         </p>
 
-        <div
-          className="w-full max-w-xl h-px"
-          style={{
-            background: "linear-gradient(90deg, transparent, rgba(180,10,10,0.22), transparent)",
-          }}
-        />
+        <div className="w-full max-w-xl h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(180,10,10,0.22), transparent)" }} />
 
-        <p
-          style={{
-            fontSize: 13,
-            fontStyle: "italic",
-            textAlign: "center",
-            color: "hsl(40,12%,58%)",
-            fontFamily: ARIAL,
-            margin: 0,
-          }}
-        >
+        <p style={{ fontSize: 13, fontStyle: "italic", textAlign: "center", color: "hsl(40,12%,58%)", fontFamily: ARIAL, margin: 0 }}>
           Prophetess Huldah, your guide, will walk you through the process.
         </p>
 
-        {/* Enter button — centered, no arrow next to it */}
         <button
           onClick={() => { audioManager.startBackground(); setPhase("name"); }}
           className="rounded-full font-bold tracking-[0.12em]"
@@ -252,38 +224,13 @@ export function GreetingFlow() {
           Enter
         </button>
 
-        {/* ── Page navigation links ── */}
-        <div style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: 10,
-          marginTop: 4,
-          width: "100%",
-          maxWidth: 480,
-        }}>
-          {[
-            { label: "Submit a Song",         action: () => { audioManager.startBackground(); setPhase("main"); } },
-            { label: "About the Analysis",    action: () => navigate("/about") },
-          ].map(({ label, action }) => (
-            <button
-              key={label}
-              onClick={action}
-              style={{
-                background: "none",
-                border: "1px solid hsl(43,30%,18%)",
-                borderRadius: 4,
-                padding: "5px 14px",
-                cursor: "pointer",
-                color: "hsl(43,40%,42%)",
-                fontSize: 11,
-                fontFamily: ARIAL,
-                letterSpacing: "0.06em",
-              }}
-            >
-              {label}
-            </button>
-          ))}
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10, marginTop: 4, width: "100%", maxWidth: 480 }}>
+          <button onClick={() => { audioManager.startBackground(); setPhase("main"); }} style={{ background: "none", border: "1px solid hsl(43,30%,18%)", borderRadius: 4, padding: "5px 14px", cursor: "pointer", color: "hsl(43,40%,42%)", fontSize: 11, fontFamily: ARIAL, letterSpacing: "0.06em" }}>
+            Submit a Song
+          </button>
+          <button onClick={() => navigate("/about")} style={{ background: "none", border: "1px solid hsl(43,30%,18%)", borderRadius: 4, padding: "5px 14px", cursor: "pointer", color: "hsl(43,40%,42%)", fontSize: 11, fontFamily: ARIAL, letterSpacing: "0.06em" }}>
+            About the Analysis
+          </button>
         </div>
 
       </motion.div>
