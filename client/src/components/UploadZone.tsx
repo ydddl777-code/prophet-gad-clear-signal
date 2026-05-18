@@ -1,10 +1,11 @@
 import { useCallback, useState, useRef } from "react";
-import { useAppState } from "@/lib/appState";
+import { useAppState, decrementTrial, isTrialExhausted } from "@/lib/appState";
 import { Upload, Music, Link, Search } from "lucide-react";
+import { PaywallGate } from "@/components/PaywallGate";
 import { motion } from "framer-motion";
 import type { AnalysisData } from "@/lib/appState";
 
-const LISTENING_DURATION = 120000;
+const LISTENING_DURATION = 8000; // 8 seconds — enough for the listening animation
 
 export function UploadZone() {
   const {
@@ -22,8 +23,12 @@ export function UploadZone() {
   const [searchInput, setSearchInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [paywallOpen, setPaywallOpen] = useState(false);
+
   const handleFile = useCallback(
     async (file: File) => {
+      if (isTrialExhausted()) { setPaywallOpen(true); return; }
+      decrementTrial();
       setSongFileName(file.name);
       const objectUrl = URL.createObjectURL(file);
       setAudioFileUrl(objectUrl);
@@ -74,6 +79,8 @@ export function UploadZone() {
 
   const handleLinkSubmit = useCallback(async () => {
     if (!linkInput.trim()) return;
+    if (isTrialExhausted()) { setPaywallOpen(true); return; }
+    decrementTrial();
     const fakeFileName = linkInput.split("/").pop() || "linked-track";
     setSongFileName(fakeFileName);
     setAudioFileUrl(null);
@@ -105,6 +112,8 @@ export function UploadZone() {
 
   const handleSearchSubmit = useCallback(async () => {
     if (!searchInput.trim()) return;
+    if (isTrialExhausted()) { setPaywallOpen(true); return; }
+    decrementTrial();
     setSongFileName(searchInput.trim());
     setAudioFileUrl(null);
     setPhase("listening");
@@ -156,6 +165,8 @@ export function UploadZone() {
   };
 
   if (phase !== "main") return null;
+
+  if (paywallOpen) return <PaywallGate onClose={() => setPaywallOpen(false)} />;
 
   const tabStyle = (tab: typeof activeTab) => ({
     background: activeTab === tab ? "hsl(20, 6%, 14%)" : "transparent",

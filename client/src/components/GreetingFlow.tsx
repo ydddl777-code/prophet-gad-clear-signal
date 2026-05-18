@@ -63,7 +63,23 @@ export function GreetingFlow() {
           backdropFilter: "blur(8px)",
         }}
       >
-        <span style={{ fontSize: 28 }} aria-label="Lion">🦁</span>
+        {/* Lion icon — replaces emoji */}
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-label="Lion">
+          <circle cx="16" cy="16" r="13" fill="hsl(43,55%,22%)" />
+          <circle cx="10" cy="8"  r="3.5" fill="hsl(43,55%,22%)" />
+          <circle cx="22" cy="8"  r="3.5" fill="hsl(43,55%,22%)" />
+          <circle cx="5"  cy="13" r="3"   fill="hsl(43,55%,22%)" />
+          <circle cx="27" cy="13" r="3"   fill="hsl(43,55%,22%)" />
+          <circle cx="6"  cy="20" r="2.8" fill="hsl(43,55%,22%)" />
+          <circle cx="26" cy="20" r="2.8" fill="hsl(43,55%,22%)" />
+          <circle cx="16" cy="16" r="8.5" fill="hsl(43,62%,50%)" />
+          <circle cx="13" cy="15" r="1.5" fill="hsl(20,8%,8%)" />
+          <circle cx="19" cy="15" r="1.5" fill="hsl(20,8%,8%)" />
+          <circle cx="13.3" cy="14.6" r="0.5" fill="rgba(255,255,255,0.45)" />
+          <circle cx="19.3" cy="14.6" r="0.5" fill="rgba(255,255,255,0.45)" />
+          <ellipse cx="16" cy="17.8" rx="1.6" ry="1.1" fill="hsl(25,50%,30%)" />
+          <path d="M14.2 20 Q16 21.8 17.8 20" stroke="hsl(20,25%,20%)" strokeWidth="0.9" fill="none" strokeLinecap="round" />
+        </svg>
 
         <div style={{ textAlign: "center" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
@@ -106,7 +122,26 @@ export function GreetingFlow() {
           </p>
         </div>
 
-        <span style={{ fontSize: 28 }} aria-label="Breastplate">🛡️</span>
+        {/* Breastplate icon — 12 tribal stones */}
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-label="Breastplate of the High Priest">
+          <path d="M16 2.5L29 8V20Q16 31 3 20V8Z" fill="hsl(43,38%,18%)" stroke="hsl(43,62%,46%)" strokeWidth="1.4" />
+          {/* Row 1 */}
+          <rect x="7.5"  y="8.5" width="4" height="3" rx="0.6" fill="hsl(0,68%,52%)"   opacity="0.9" />
+          <rect x="14"   y="8.5" width="4" height="3" rx="0.6" fill="hsl(120,52%,44%)" opacity="0.9" />
+          <rect x="20.5" y="8.5" width="4" height="3" rx="0.6" fill="hsl(200,70%,54%)" opacity="0.9" />
+          {/* Row 2 */}
+          <rect x="7.5"  y="12.5" width="4" height="3" rx="0.6" fill="hsl(43,80%,52%)"  opacity="0.9" />
+          <rect x="14"   y="12.5" width="4" height="3" rx="0.6" fill="hsl(270,55%,56%)" opacity="0.9" />
+          <rect x="20.5" y="12.5" width="4" height="3" rx="0.6" fill="hsl(30,78%,54%)"  opacity="0.9" />
+          {/* Row 3 */}
+          <rect x="7.5"  y="16.5" width="4" height="3" rx="0.6" fill="hsl(180,52%,44%)" opacity="0.9" />
+          <rect x="14"   y="16.5" width="4" height="3" rx="0.6" fill="hsl(60,68%,50%)"  opacity="0.9" />
+          <rect x="20.5" y="16.5" width="4" height="3" rx="0.6" fill="hsl(340,60%,54%)" opacity="0.9" />
+          {/* Row 4 */}
+          <rect x="7.5"  y="20.5" width="4" height="3" rx="0.6" fill="hsl(240,58%,58%)" opacity="0.9" />
+          <rect x="14"   y="20.5" width="4" height="3" rx="0.6" fill="hsl(100,52%,46%)" opacity="0.9" />
+          <rect x="20.5" y="20.5" width="4" height="3" rx="0.6" fill="hsl(15,70%,54%)"  opacity="0.9" />
+        </svg>
       </div>
 
       {/* Nav arrow */}
@@ -158,12 +193,14 @@ export function GreetingFlow() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.1 }}
           style={{
-            width: "min(260px, 70vw)",
-            height: "auto",
+            width: "min(220px, 60vw)",
+            height: "min(340px, 55vh)",
             borderRadius: 8,
             objectFit: "cover",
+            objectPosition: "top center",
             border: "1px solid rgba(184,134,11,0.15)",
             boxShadow: "0 8px 40px rgba(0,0,0,0.5)",
+            display: "block",
           }}
         />
 
@@ -182,58 +219,4 @@ export function GreetingFlow() {
           musicians of the temple — that same discerning spirit is here with us today. Gad
           directed what the Levites sang, when they sang it, how they sang it, the instruments
           they played, and the order in which they ministered before the Lord. His was not a
-          ceremonial title but a divine commission over sacred sound. Submit any song for
-          Prophet Gad's evaluation — he will render his verdict as he did in the days of the
-          temple.
-        </p>
-
-        <div style={{ borderLeft: "3px solid hsl(0, 55%, 38%)", paddingLeft: 14, maxWidth: 540, width: "100%" }}>
-          <p style={{ fontSize: 13, fontStyle: "italic", color: "hsl(0, 40%, 60%)", fontFamily: ARIAL, margin: 0, lineHeight: 1.7 }}>
-            "He stationed the Levites in the temple of the Lord with cymbals,
-            harps and lyres in the way prescribed by David and Gad the king's
-            seer and Nathan the prophet; this was commanded by the Lord
-            through his prophets." — 2 Chronicles 29:25
-          </p>
-        </div>
-
-        <p style={{ fontSize: 13, fontStyle: "italic", color: "hsl(43, 72%, 54%)", fontFamily: ARIAL, margin: 0, textAlign: "center", letterSpacing: "0.04em" }}>
-          True worship always has a clear signal.
-        </p>
-
-        <div className="w-full max-w-xl h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(180,10,10,0.22), transparent)" }} />
-
-        <p style={{ fontSize: 13, fontStyle: "italic", textAlign: "center", color: "hsl(40,12%,58%)", fontFamily: ARIAL, margin: 0 }}>
-          Prophetess Huldah, your guide, will walk you through the process.
-        </p>
-
-        <button
-          onClick={() => { audioManager.startBackground(); setPhase("name"); }}
-          className="rounded-full font-bold tracking-[0.12em]"
-          style={{
-            background: "hsl(142, 52%, 34%)",
-            color: "#ffffff",
-            fontFamily: ARIAL,
-            fontSize: 14,
-            border: "1px solid hsl(142, 45%, 44%)",
-            cursor: "pointer",
-            padding: "0.55rem 3rem",
-            boxShadow: "0 2px 14px rgba(0,150,60,0.22)",
-          }}
-          data-testid="button-enter"
-        >
-          Enter
-        </button>
-
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10, marginTop: 4, width: "100%", maxWidth: 480 }}>
-          <button onClick={() => { audioManager.startBackground(); setPhase("main"); }} style={{ background: "none", border: "1px solid hsl(43,30%,18%)", borderRadius: 4, padding: "5px 14px", cursor: "pointer", color: "hsl(43,40%,42%)", fontSize: 11, fontFamily: ARIAL, letterSpacing: "0.06em" }}>
-            Submit a Song
-          </button>
-          <button onClick={() => navigate("/about")} style={{ background: "none", border: "1px solid hsl(43,30%,18%)", borderRadius: 4, padding: "5px 14px", cursor: "pointer", color: "hsl(43,40%,42%)", fontSize: 11, fontFamily: ARIAL, letterSpacing: "0.06em" }}>
-            About the Analysis
-          </button>
-        </div>
-
-      </motion.div>
-    </div>
-  );
-}
+          ceremonial title but a divi

@@ -27,20 +27,24 @@ function ScoreGauge({ score }: { score: number }) {
         }}
       >
         <div
-          className="w-22 h-22 rounded-full flex flex-col items-center justify-center"
+          className="rounded-full flex flex-col items-center justify-center"
           style={{
             width: "82px",
             height: "82px",
             background: "hsl(20, 8%, 7%)",
+            textAlign: "center",
           }}
         >
           <span
             className="font-serif text-3xl font-bold tabular-nums"
-            style={{ color }}
+            style={{ color, display: "block", lineHeight: 1.1 }}
           >
             {score}
           </span>
-          <span className="text-[9px] tracking-widest uppercase" style={{ color: "hsl(40, 6%, 50%)" }}>
+          <span
+            className="text-[9px] tracking-widest uppercase"
+            style={{ color: "hsl(40, 6%, 50%)", display: "block", marginTop: 1 }}
+          >
             Signal
           </span>
         </div>
@@ -106,13 +110,14 @@ export function VerdictDisplay() {
     hasSpoken.current = true;
 
     const timer = setTimeout(async () => {
-      const text = isKidMode
+      const namePrefix = userName ? `${userName}. ` : "";
+    const text = isKidMode
         ? verdict === "ark"
-          ? "This song shines with goodness."
-          : "This song needs a different path."
+          ? `${namePrefix}This song carries a good signal. It is worthy.`
+          : `${namePrefix}This song carries patterns that may not serve your spirit. Seek something that uplifts.`
         : verdict === "ark"
-        ? "King David would approve."
-        : "Not in the sanctuary. Not in His presence. Not while I'm standing.";
+        ? `${namePrefix}King David would approve. This signal aligns with the eternal standard.`
+        : `${namePrefix}This signal does not align with the tabernacle standard. The patterns measured here invite careful discernment. I do not condemn — I counsel. Let Prophetess Huldah guide you further.`;
 
       const elevenLabsAudio = await speakElevenLabs(text, "gad");
       if (elevenLabsAudio) {
@@ -166,6 +171,7 @@ export function VerdictDisplay() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
       className="flex flex-col items-center gap-6 w-full max-w-md mx-auto"
+      style={{ textAlign: "center", alignSelf: "center" }}
     >
       <ScoreGauge score={score} />
 
@@ -182,7 +188,7 @@ export function VerdictDisplay() {
               style={{ color: "hsl(43, 80%, 54%)" }}
               data-testid="text-verdict-ark"
             >
-              {isKidMode ? "This song shines with goodness." : "King David would approve."}
+              {isKidMode ? "This song carries a good signal. It is worthy." : `${userName ? userName + " — " : ""}King David would approve.`}
             </p>
             <p className="text-xs italic" style={{ color: "hsl(270, 22%, 62%)" }}>
               The shofar rises in honor.
@@ -221,11 +227,11 @@ export function VerdictDisplay() {
             data-testid="text-verdict-calf"
           >
             {isKidMode
-              ? "This song needs a different path."
-              : "Not in the sanctuary. Not in His presence. Not while I'm standing."}
+              ? "This song carries patterns that may not serve your spirit."
+              : `${userName ? userName + " — " : ""}This signal does not align with the tabernacle standard.`}
           </p>
           <p className="text-xs italic" style={{ color: "hsl(270, 22%, 55%)" }}>
-            The shofar turns away.
+            The patterns measured here invite careful discernment.
           </p>
         </motion.div>
       )}
