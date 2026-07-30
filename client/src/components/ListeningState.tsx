@@ -6,19 +6,19 @@ import { Button } from "@/components/ui/button";
 import { speakHuldah } from "@/lib/tts";
 
 const STATUS_MESSAGES = [
-  "Evaluating spiritual frequency...",
-  "Assessing transcendent inducement...",
-  "Measuring lyrical doctrine...",
+  "Evaluating frequency balance...",
+  "Assessing trance-inducement risk...",
+  "Measuring lyric signal...",
   "Scanning for trance patterns...",
   "Analyzing rhythmic archetype...",
   "Detecting cultural markers...",
-  "Cross-referencing scripture alignment...",
+  "Reviewing lyric alignment...",
   "Mapping frequency signatures...",
   "Scanning for loop saturation...",
   "Assessing consciousness-alteration risk...",
   "Calculating Signal Clarity Score...",
-  "Consulting the sacred register...",
-  "Weighing the frequency against the standard...",
+  "Checking the Clear Signal criteria...",
+  "Weighing the frequency profile...",
   "Final calibration in progress...",
 ];
 
@@ -332,7 +332,7 @@ export function ListeningState() {
         className="text-[10px] italic text-center tracking-wider"
         style={{ color: "hsl(40, 6%, 35%)" }}
       >
-        The waves show what the spirit already knows.
+        The waves show rhythm, repetition, and dynamic movement.
       </p>
     </motion.div>
   );

@@ -57,7 +57,7 @@ export function generateEbook() {
   doc.setFont("times", "bold");
   doc.setFontSize(28);
   setColor(doc, GOLD);
-  centeredText(doc, "GAD'S TUNE", 55);
+  centeredText(doc, "CLEAR SIGNAL", 55);
 
   doc.setFontSize(10);
   setColor(doc, PURPLE);
@@ -78,7 +78,7 @@ export function generateEbook() {
   doc.setFont("times", "normal");
   doc.setFontSize(8);
   setColor(doc, TEKHELET);
-  centeredText(doc, "Temple, Tabernacle, Tone", 116);
+  centeredText(doc, "Rhythm, Repetition, Signal", 116);
 
   doc.setFont("times", "italic");
   doc.setFontSize(7);
@@ -195,7 +195,7 @@ export function generateEbook() {
   doc.setFontSize(9);
   setColor(doc, DARK_INK);
   wrappedCentered(doc,
-    '"David, together with the commanders of the army, set apart some of the sons of Asaph, Heman and Jeduthun for the ministry of prophesying with lyres, harps and cymbals."',
+    '"David, together with the commanders of the army, set apart some of the sons of Asaph, Heman and Jeduthun for ordered musical service with lyres, harps and cymbals."',
     56, pw - 36
   );
 
@@ -206,7 +206,7 @@ export function generateEbook() {
   setColor(doc, GOLD);
   centeredText(doc, "With Asaph and Heman,", 102);
   centeredText(doc, "he tuned the strings.", 110);
-  centeredText(doc, "Not for show. For the Ark.", 118);
+  centeredText(doc, "Not for show. For clear discernment.", 118);
 
   doc.setFont("times", "italic");
   doc.setFontSize(9);
@@ -253,8 +253,8 @@ export function generateEbook() {
   doc.setFont("times", "bold");
   doc.setFontSize(12);
   setColor(doc, DARK_INK);
-  centeredText(doc, "The calf is back.", 55);
-  centeredText(doc, "The Ark is quiet.", 65);
+  centeredText(doc, "Noise is easy.", 55);
+  centeredText(doc, "A clear signal is rare.", 65);
 
   goldDivider(doc, 80);
 
@@ -369,7 +369,7 @@ export function generateEbook() {
   doc.setFontSize(7);
   setColor(doc, { r: 140, g: 120, b: 80 });
   centeredText(doc, "No price. No ads. Just truth.", 170);
-  centeredText(doc, "GAD'S TUNE \u2014 Temple, Tabernacle, Tone", 176);
+  centeredText(doc, "CLEAR SIGNAL - Rhythm, Repetition, Signal", 176);
 
   doc.save("Gads-Tune-The-Prophet-Who-Tuned-Heaven.pdf");
 }

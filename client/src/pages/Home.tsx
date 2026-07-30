@@ -16,12 +16,12 @@ const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
 
 const DEMO_ANALYSIS: AnalysisData = {
   signalClarityScore: 78,
-  bpmProfile:          { score: 82, label: "Measured tempo — spiritually consistent" },
-  lyricalDoctrine:     { score: 88, label: "Clean spiritual alignment detected" },
+  bpmProfile:          { score: 82, label: "Measured tempo - low concern profile" },
+  lyricalDoctrine:     { score: 88, label: "Clear lyric signal detected" },
   tranceInducement:    { score: 75, label: "Low trance-inducement risk" },
   loopRepetition:      { score: 72, label: "Natural variation — low repetition saturation" },
   culturalDegradation: { score: 85, label: "No cultural degradation markers" },
-  rhythmicArchetype:   { score: 79, label: "Sacred rhythmic alignment — constructive archetype" },
+  rhythmicArchetype:   { score: 79, label: "Constructive rhythmic alignment" },
 };
 
 const NAV_BTN: import("react").CSSProperties = {
@@ -133,7 +133,7 @@ export default function Home() {
                   margin: 0,
                 }}
               >
-                Music shapes the soul — Clear Signal tells you which sounds heal and which harm.
+                Clear Signal reviews rhythm, repetition, lyric signal, and trance-inducement risk.
               </motion.p>
 
               <AnimatePresence mode="wait">

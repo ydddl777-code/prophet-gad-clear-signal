@@ -35,7 +35,7 @@ const sections = [
         text: "David, together with the commanders of the army, set apart for the service the sons of Asaph, Heman, and Jeduthun, who prophesied with lyres, harps, and cymbals.",
       },
     ],
-    summary: "With Asaph and Heman, he tuned the strings. Not for show. For the Ark. He didn\u2019t just play. He ordered. He tuned. He guarded.",
+    summary: "With Asaph and Heman, he was connected to ordered music, disciplined sound, and public responsibility.",
   },
   {
     title: "From the Tribe of Warriors",
@@ -118,9 +118,9 @@ export function ScriptureDialog() {
             style={{ color: "hsl(270, 30%, 40%)" }}
             data-testid="text-scripture-closing"
           >
-            Stood in the king's court. Spoke truth. Tuned worship.
+            Historical office. Disciplined sound. Clear signal.
             <br />
-            Now he tunes yours.
+            The analysis applies the same criteria to every nation.
           </p>
         </div>
       </DialogContent>

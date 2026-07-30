@@ -100,7 +100,7 @@ function CategoryBar({ label, score, detail }: CategoryBarProps) {
 }
 
 export function VerdictDisplay() {
-  const { phase, verdict, userName, isKidMode, setPhase, setVerdict, voiceEnabled, analysisData } =
+  const { phase, verdict, userName, isKidMode, setPhase, setVerdict, voiceEnabled, analysisData, songFileName } =
     useAppState();
   const hasSpoken = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -116,8 +116,8 @@ export function VerdictDisplay() {
           ? `${namePrefix}This song carries a good signal. It is worthy.`
           : `${namePrefix}This song carries patterns that may not serve your spirit. Seek something that uplifts.`
         : verdict === "ark"
-        ? `${namePrefix}King David would approve. This signal aligns with the eternal standard.`
-        : `${namePrefix}This signal does not align with the tabernacle standard. The patterns measured here invite careful discernment. I do not condemn — I counsel. Let Prophetess Huldah guide you further.`;
+        ? `${namePrefix}This track meets the Clear Signal criteria. The measured patterns show a low-concern profile.`
+        : `${namePrefix}This track does not currently meet the Clear Signal criteria. The measured patterns suggest elevated concern and deserve review.`;
 
       const elevenLabsAudio = await speakElevenLabs(text, "gad");
       if (elevenLabsAudio) {
@@ -150,7 +150,7 @@ export function VerdictDisplay() {
   const isArk = verdict === "ark";
 
   const handleDownloadCertificate = () => {
-    generateCertificate(userName);
+    generateCertificate(userName, { songFileName, verdict, analysisData });
   };
 
   const handleTryAgain = () => {
@@ -188,7 +188,7 @@ export function VerdictDisplay() {
               style={{ color: "hsl(43, 80%, 54%)" }}
               data-testid="text-verdict-ark"
             >
-              {isKidMode ? "This song carries a good signal. It is worthy." : `${userName ? userName + " — " : ""}King David would approve.`}
+              {isKidMode ? "This song carries a good signal." : `${userName ? userName + " — " : ""}This track meets the Clear Signal criteria.`}
             </p>
             <p className="text-xs italic" style={{ color: "hsl(270, 22%, 62%)" }}>
               The shofar rises in honor.
@@ -210,7 +210,7 @@ export function VerdictDisplay() {
               data-testid="button-seal-of-approval"
             >
               <Award className="w-4 h-4 mr-2" />
-              Seal of Approval
+              Download Report
             </Button>
           </motion.div>
         </>
@@ -227,8 +227,8 @@ export function VerdictDisplay() {
             data-testid="text-verdict-calf"
           >
             {isKidMode
-              ? "This song carries patterns that may not serve your spirit."
-              : `${userName ? userName + " — " : ""}This signal does not align with the tabernacle standard.`}
+              ? "This song carries patterns that deserve another look."
+              : `${userName ? userName + " — " : ""}This track does not currently meet the Clear Signal criteria.`}
           </p>
           <p className="text-xs italic" style={{ color: "hsl(270, 22%, 55%)" }}>
             The patterns measured here invite careful discernment.
@@ -287,8 +287,7 @@ export function VerdictDisplay() {
             className="text-[9px] italic text-center mt-1"
             style={{ color: "hsl(40, 6%, 35%)" }}
           >
-            Applies the same standard to every tradition, genre, and culture.
-            — 1 Thessalonians 5:21
+            Applies the same criteria to every tradition, genre, and culture.
           </p>
         </motion.div>
       )}

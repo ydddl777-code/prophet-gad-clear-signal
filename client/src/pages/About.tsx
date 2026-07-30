@@ -19,7 +19,7 @@ const CATEGORIES = [
   {
     icon: "📖",
     title: "Lyrical Doctrine",
-    desc: "Scripture alignment, doctrinal substance, and red-flag terminology detection. Prophetic declaration, Torah-aligned themes, and KJV language score high.",
+    desc: "Lyric clarity, source language, and red-flag terminology detection. Clear declaration, coherent meaning, and KJV-rooted language score high.",
   },
   {
     icon: "⚠",
@@ -39,7 +39,7 @@ const CATEGORIES = [
   {
     icon: "🥁",
     title: "Rhythmic Archetype Classification",
-    desc: "Genre-aware analysis that distinguishes cultural rhythm from spiritual manipulation. Roots, dub, nyabinghi, and prophetic percussion are evaluated in context.",
+    desc: "Genre-aware analysis that distinguishes cultural rhythm from manipulative repetition. Roots, dub, nyabinghi, and prophetic percussion are evaluated in context.",
   },
 ];
 
@@ -50,6 +50,7 @@ function WaveformHero() {
       style={{
         width: "100%",
         maxWidth: 680,
+        margin: "0 auto",
         height: 130,
         position: "relative",
         overflow: "hidden",
@@ -128,7 +129,7 @@ function Section({
           letterSpacing: "0.12em",
           textTransform: "uppercase",
           color: GOLD,
-          marginBottom: 14,
+          margin: "0 0 14px",
           paddingBottom: 8,
           borderBottom: `1px solid ${BORDER}`,
         }}
@@ -201,6 +202,7 @@ export default function About() {
             textTransform: "uppercase",
             color: CRIMSON,
             fontFamily: ARIAL,
+            margin: 0,
           }}
         >
           Music Discernment · Remnant Seed Sound Framework
@@ -267,8 +269,8 @@ export default function About() {
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "hsl(40, 10%, 72%)", margin: 0 }}>
             The relationship between music and the rise or fall of civilizations is not new. Ancient China's{" "}
             <em>Yue Ji</em> (Record of Music) documented how the corruption of court music preceded dynastic
-            collapse. The Roman Empire's shift from sacred hymns to theatrical spectacle paralleled its moral
-            decline. The Bwa Kayiman ceremony of 1791 demonstrated the raw spiritual power of rhythmic
+            collapse. The Roman Empire's shift from disciplined hymns to theatrical spectacle paralleled its moral
+            decline. The Bwa Kayiman ceremony of 1791 demonstrated the intense social power of rhythmic
             invocation. Tibetan, Kurdish, West African, and Indigenous traditions worldwide have long
             understood that certain rhythmic and tonal patterns open gates — and others close them.
           </p>
@@ -293,7 +295,7 @@ export default function About() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fill, minmax(min(280px, 100%), 1fr))",
               gap: 14,
               width: "100%",
             }}
@@ -347,7 +349,7 @@ export default function About() {
             <p style={{ fontSize: 13, lineHeight: 1.85, color: "hsl(40, 8%, 62%)", margin: 0 }}>
               Clear Signal is a personal discernment tool developed by Prophet Gad under the Remnant
               Seed Sound framework. Analysis results reflect alignment with this framework's criteria
-              and are provided for personal educational and spiritual reference only. Clear Signal does
+              and are provided for personal educational reference only. Clear Signal does
               not claim legal, scientific, or theological authority over any commercial music product.
               All music remains the intellectual property of its respective owners. No personal data,
               uploaded audio files, or listening history is stored, transmitted, or retained by this
@@ -421,7 +423,7 @@ export default function About() {
           >
             Return to Analysis
           </button>
-          <p style={{ fontSize: 10, color: "hsl(40, 6%, 28%)", textAlign: "center", fontFamily: ARIAL }}>
+          <p style={{ fontSize: 10, color: "hsl(40, 6%, 28%)", textAlign: "center", fontFamily: ARIAL, margin: 0 }}>
             A product of Prophet Gad — Remnant Seed LLC · Thread Bear Studio
           </p>
         </motion.div>

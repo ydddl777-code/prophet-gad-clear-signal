@@ -85,12 +85,12 @@ function gadCatalogResult(songName: string): AnalysisResult {
     signalClarityScore: Math.max(85, Math.min(96, score)),
     songName,
     analysis: {
-      bpmProfile:         { score: Math.round(bpm),     label: "Measured tempo — genre-safe rhythmic pattern" },
-      lyricalDoctrine:    { score: Math.round(lyrical), label: "Strong scriptural alignment — prophetic declaration detected" },
-      tranceInducement:   { score: Math.round(dynamic), label: "Low trance-inducement risk — dynamic variation present" },
-      loopRepetition:     { score: Math.round(rhythm),  label: "Genre-appropriate repetition — not entrainment-grade" },
-      culturalDegradation:{ score: Math.round(source),  label: "Remnant Seed Sound — certified reference standard" },
-      rhythmicArchetype:  { score: Math.round(intent),  label: "Sacred rhythmic alignment — conscious worship archetype" },
+      bpmProfile:         { score: Math.round(bpm),     label: "Measured tempo - genre-safe rhythmic pattern" },
+      lyricalDoctrine:    { score: Math.round(lyrical), label: "Strong lyric signal - clear declaration detected" },
+      tranceInducement:   { score: Math.round(dynamic), label: "Low trance-inducement risk - dynamic variation present" },
+      loopRepetition:     { score: Math.round(rhythm),  label: "Genre-appropriate repetition - not entrainment-grade" },
+      culturalDegradation:{ score: Math.round(source),  label: "Reference catalog match - low concern profile" },
+      rhythmicArchetype:  { score: Math.round(intent),  label: "Constructive rhythmic alignment - conscious listening pattern" },
     },
   };
 }
@@ -118,11 +118,11 @@ function flaggedArtistResult(songName: string): AnalysisResult {
     songName,
     analysis: {
       bpmProfile:         { score: Math.round(bpm),     label: "Tempo pattern aligned with high-arousal manipulation" },
-      lyricalDoctrine:    { score: Math.round(lyrical), label: "Vague experiential language — doctrinal alignment weak" },
-      tranceInducement:   { score: Math.round(dynamic), label: "Emotional crescendo architecture — trance-adjacent pattern" },
-      loopRepetition:     { score: Math.round(rhythm),  label: "Repetitive loop structure — entrainment risk elevated" },
-      culturalDegradation:{ score: Math.round(source),  label: "Flagged organization — NAR/dominionist affiliation detected" },
-      rhythmicArchetype:  { score: Math.round(intent),  label: "Non-sacred emotional bypass pattern detected" },
+      lyricalDoctrine:    { score: Math.round(lyrical), label: "Vague experiential language - lyric signal requires review" },
+      tranceInducement:   { score: Math.round(dynamic), label: "Emotional crescendo architecture - trance-adjacent pattern" },
+      loopRepetition:     { score: Math.round(rhythm),  label: "Repetitive loop structure - entrainment risk elevated" },
+      culturalDegradation:{ score: Math.round(source),  label: "Flagged source pattern - manual review recommended" },
+      rhythmicArchetype:  { score: Math.round(intent),  label: "Emotional bypass pattern detected" },
     },
   };
 }
@@ -214,12 +214,12 @@ function analyzeAudio(buffer: Buffer, songName: string): AnalysisResult {
     signalClarityScore: Math.round(signalClarityScore),
     songName,
     analysis: {
-      bpmProfile:          { score: Math.round(bpmScore),       label: riskLabel(bpmScore,       "Measured tempo — spiritually consistent", "Elevated tempo — potential agitation pattern", "Rapid-fire frequency — boundary-challenging") },
-      lyricalDoctrine:     { score: Math.round(lyricalScore),   label: riskLabel(lyricalScore,   "Clean spiritual alignment detected", "Mixed doctrinal signals — discern carefully", "Degraded spiritual messaging — caution advised") },
-      tranceInducement:    { score: Math.round(tranceScore),    label: riskLabel(tranceScore,    "Low trance-inducement risk", "Moderate repetitive patterns — monitor with care", "High trance-inducement risk — consciousness-altering potential") },
-      loopRepetition:      { score: Math.round(loopScore),      label: riskLabel(loopScore,      "Natural variation — low repetition saturation", "Repetitive loop structures detected", "Heavy loop saturation — dissociative risk elevated") },
+      bpmProfile:          { score: Math.round(bpmScore),       label: riskLabel(bpmScore,       "Measured tempo - low concern profile", "Elevated tempo - potential agitation pattern", "Rapid-fire frequency - boundary-challenging") },
+      lyricalDoctrine:     { score: Math.round(lyricalScore),   label: riskLabel(lyricalScore,   "Clear lyric signal detected", "Mixed lyric signals - review carefully", "Low-clarity lyric signal - caution advised") },
+      tranceInducement:    { score: Math.round(tranceScore),    label: riskLabel(tranceScore,    "Low trance-inducement risk", "Moderate repetitive patterns - monitor with care", "High trance-inducement risk - consciousness-altering potential") },
+      loopRepetition:      { score: Math.round(loopScore),      label: riskLabel(loopScore,      "Natural variation - low repetition saturation", "Repetitive loop structures detected", "Heavy loop saturation - dissociative risk elevated") },
       culturalDegradation: { score: Math.round(sourceScore),    label: riskLabel(sourceScore,    "No cultural degradation markers", "Some cultural conflict patterns present", "Significant cultural degradation signals") },
-      rhythmicArchetype:   { score: Math.round(archetypeScore), label: riskLabel(archetypeScore, "Sacred rhythmic alignment — constructive archetype", "Neutral rhythmic signature — culturally ambiguous", "Non-sacred rhythmic archetype — trance-adjacent pattern") },
+      rhythmicArchetype:   { score: Math.round(archetypeScore), label: riskLabel(archetypeScore, "Constructive rhythmic alignment", "Neutral rhythmic signature - culturally ambiguous", "Trance-adjacent rhythmic pattern") },
     },
   };
 }
