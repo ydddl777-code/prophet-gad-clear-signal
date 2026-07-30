@@ -1,6 +1,6 @@
 import { useCallback, useState, useRef, type CSSProperties } from "react";
 import { useAppState, decrementTrial, isTrialExhausted } from "@/lib/appState";
-import { Upload, Music, Link, Search } from "lucide-react";
+import { Upload, Music, Link, Search, ExternalLink } from "lucide-react";
 import { PaywallGate } from "@/components/PaywallGate";
 import { motion } from "framer-motion";
 import type { AnalysisData } from "@/lib/appState";
@@ -14,31 +14,69 @@ const INPUT_STYLE: CSSProperties = {
   boxSizing: "border-box",
   borderRadius: 6,
   padding: "10px 12px",
-  fontSize: 14,
+  fontSize: 15,
   outline: "none",
-  background: "hsl(20, 6%, 14%)",
-  border: "1px solid hsl(40, 8%, 20%)",
-  color: "hsl(40, 10%, 80%)",
+  background: "#ffffff",
+  border: "1px solid hsl(220, 15%, 82%)",
+  color: "hsl(222, 20%, 12%)",
+  boxShadow: "inset 0 1px 3px rgba(184,134,11,0.06)",
 };
 
 const SUBMIT_STYLE: CSSProperties = {
   width: "100%",
-  border: "none",
+  border: "1px solid hsl(42, 90%, 34%)",
   borderRadius: 6,
-  padding: "10px 0",
+  padding: "11px 0",
   cursor: "pointer",
-  fontSize: 13,
+  fontSize: 14,
+  fontWeight: 700,
   letterSpacing: "0.1em",
   textTransform: "uppercase",
-  background: "hsl(43, 80%, 48%)",
-  color: "hsl(43, 10%, 8%)",
+  background: "linear-gradient(135deg, hsl(45, 95%, 50%), hsl(38, 90%, 42%))",
+  color: "hsl(222, 30%, 8%)",
+  boxShadow: "0 4px 14px rgba(184,134,11,0.30)",
 };
 
 const HELPER_STYLE: CSSProperties = {
-  fontSize: 12,
+  fontSize: 13,
   textAlign: "center",
   margin: 0,
-  color: "hsl(40, 6%, 50%)",
+  color: "hsl(222, 10%, 36%)",
+};
+
+// Real search-out links — open the user's search on each platform in a new tab.
+const SEARCH_PLATFORMS: { name: string; buildUrl: (q: string) => string }[] = [
+  {
+    name: "YouTube",
+    buildUrl: (q) => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,
+  },
+  {
+    name: "Apple Music",
+    buildUrl: (q) => `https://music.apple.com/us/search?term=${encodeURIComponent(q)}`,
+  },
+  {
+    name: "Spotify",
+    buildUrl: (q) => `https://open.spotify.com/search/${encodeURIComponent(q)}`,
+  },
+];
+
+const PLATFORM_LINK_STYLE: CSSProperties = {
+  flex: 1,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: 5,
+  padding: "9px 6px",
+  borderRadius: 6,
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: "0.04em",
+  textDecoration: "none",
+  background: "#ffffff",
+  border: "1px solid rgba(5,150,105,0.5)",
+  color: "hsl(161, 84%, 20%)",
+  boxShadow: "0 2px 8px rgba(5,150,105,0.14)",
+  whiteSpace: "nowrap",
 };
 
 export function UploadZone() {
@@ -55,12 +93,19 @@ export function UploadZone() {
   const [activeTab, setActiveTab] = useState<"upload" | "link" | "search">("upload");
   const [linkInput, setLinkInput] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [notice, setNotice] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [paywallOpen, setPaywallOpen] = useState(false);
 
   const handleFile = useCallback(
     async (file: File) => {
+      // HARD GATE: analysis never starts without an actually submitted audio file.
+      if (!file || file.size === 0) {
+        setNotice("That file looks empty. Please choose a real audio file to analyze.");
+        return;
+      }
+      setNotice("");
       if (isTrialExhausted()) { setPaywallOpen(true); return; }
       decrementTrial();
       setSongFileName(file.name);
@@ -112,7 +157,12 @@ export function UploadZone() {
   );
 
   const handleLinkSubmit = useCallback(async () => {
-    if (!linkInput.trim()) return;
+    // HARD GATE: no verdict without an actually pasted link.
+    if (!linkInput.trim()) {
+      setNotice("Please paste a song link first — then press Analyze.");
+      return;
+    }
+    setNotice("");
     if (isTrialExhausted()) { setPaywallOpen(true); return; }
     decrementTrial();
     const fakeFileName = linkInput.split("/").pop() || "linked-track";
@@ -145,7 +195,12 @@ export function UploadZone() {
   }, [linkInput, setSongFileName, setAudioFileUrl, setPhase, setVerdict, setAnalysisData]);
 
   const handleSearchSubmit = useCallback(async () => {
-    if (!searchInput.trim()) return;
+    // HARD GATE: no verdict without an actual search entry.
+    if (!searchInput.trim()) {
+      setNotice("Please type a song title and artist first — then press Analyze.");
+      return;
+    }
+    setNotice("");
     if (isTrialExhausted()) { setPaywallOpen(true); return; }
     decrementTrial();
     setSongFileName(searchInput.trim());
@@ -181,7 +236,11 @@ export function UploadZone() {
       e.preventDefault();
       setIsDragging(false);
       const file = e.dataTransfer.files[0];
-      if (file && file.type.startsWith("audio/")) handleFile(file);
+      if (file && file.type.startsWith("audio/")) {
+        handleFile(file);
+      } else {
+        setNotice("That doesn't look like an audio file. Please drop an MP3, WAV, M4A, or FLAC.");
+      }
     },
     [handleFile]
   );
@@ -192,7 +251,7 @@ export function UploadZone() {
   };
 
   const handleDragLeave = () => setIsDragging(false);
-  const handleClick = () => fileInputRef.current?.click();
+  const openFilePicker = () => fileInputRef.current?.click();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) handleFile(file);
@@ -209,16 +268,17 @@ export function UploadZone() {
     justifyContent: "center",
     gap: 6,
     padding: "10px 0",
-    fontSize: 11,
+    fontSize: 12,
+    fontWeight: 700,
     textTransform: "uppercase",
     letterSpacing: "0.1em",
     cursor: "pointer",
     borderTop: "none",
     borderLeft: "none",
     borderRight: "none",
-    background: activeTab === tab ? "hsl(20, 6%, 14%)" : "transparent",
-    color: activeTab === tab ? "hsl(43, 74%, 52%)" : "hsl(40, 8%, 50%)",
-    borderBottom: activeTab === tab ? "1px solid hsl(43, 74%, 42%)" : "1px solid transparent",
+    background: activeTab === tab ? "hsl(150, 45%, 96%)" : "transparent",
+    color: activeTab === tab ? "hsl(161, 84%, 20%)" : "hsl(222, 10%, 36%)",
+    borderBottom: activeTab === tab ? "2px solid #059669" : "2px solid transparent",
   });
 
   return (
@@ -240,14 +300,36 @@ export function UploadZone() {
         className="text-center text-base"
         style={{
           textAlign: "center",
-          fontSize: 16,
+          fontSize: 17,
           margin: 0,
-          color: "hsl(40, 12%, 70%)",
+          color: "hsl(222, 20%, 15%)",
           fontFamily: "Arial, 'Helvetica Neue', Helvetica, sans-serif",
         }}
       >
         {userName ? `Submit your music, ${userName}.` : "Submit your music."}
       </p>
+
+      {notice && (
+        <p
+          role="alert"
+          style={{
+            margin: 0,
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: 1.5,
+            textAlign: "center",
+            color: "hsl(161, 84%, 16%)",
+            background: "hsl(152, 50%, 94%)",
+            border: "1px solid #059669",
+            boxShadow: "0 2px 10px rgba(5,150,105,0.14)",
+            borderRadius: 6,
+            padding: "8px 12px",
+          }}
+          data-testid="text-upload-notice"
+        >
+          {notice}
+        </p>
+      )}
 
       <div
         className="flex rounded-t-md overflow-hidden"
@@ -255,8 +337,9 @@ export function UploadZone() {
           display: "flex",
           borderRadius: "6px 6px 0 0",
           overflow: "hidden",
-          border: "1px solid hsl(40, 8%, 16%)",
+          border: "1px solid hsl(220, 15%, 88%)",
           borderBottom: "none",
+          background: "#ffffff",
         }}
       >
         {(["upload", "link", "search"] as const).map((tab) => (
@@ -280,9 +363,10 @@ export function UploadZone() {
         style={{
           padding: 20,
           borderRadius: "0 0 6px 6px",
-          background: "hsl(20, 6%, 9%)",
-          border: "1px solid hsl(40, 8%, 16%)",
+          background: "#ffffff",
+          border: "1px solid hsl(220, 15%, 88%)",
           borderTop: "none",
+          boxShadow: "0 8px 28px rgba(184,134,11,0.16)",
         }}
       >
         {activeTab === "upload" && (
@@ -290,39 +374,69 @@ export function UploadZone() {
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
-            onClick={handleClick}
+            onClick={openFilePicker}
             className="cursor-pointer rounded-md border-dashed border-2 p-8 flex flex-col items-center gap-4 transition-all duration-300"
             style={{
               cursor: "pointer",
               borderRadius: 6,
               borderWidth: 2,
               borderStyle: "dashed",
-              padding: 32,
+              padding: 28,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: 16,
+              gap: 14,
               borderColor: isDragging
-                ? "hsl(43, 80%, 50%)"
-                : "hsl(40, 8%, 22%)",
-              background: isDragging ? "hsla(43, 80%, 50%, 0.05)" : "transparent",
+                ? "#059669"
+                : "hsl(42, 70%, 60%)",
+              background: isDragging ? "rgba(5, 150, 105, 0.06)" : "hsl(210, 20%, 98.5%)",
             }}
             data-testid="upload-zone"
           >
             <div
               className="flex items-center gap-3"
-              style={{ display: "flex", alignItems: "center", gap: 12, color: "hsl(43, 70%, 48%)" }}
+              style={{ display: "flex", alignItems: "center", gap: 12, color: "hsl(42, 95%, 38%)" }}
             >
-              <Upload className="w-5 h-5" style={{ width: 20, height: 20 }} />
-              <Music className="w-5 h-5" style={{ width: 20, height: 20 }} />
+              <Upload className="w-5 h-5" style={{ width: 22, height: 22 }} />
+              <Music className="w-5 h-5" style={{ width: 22, height: 22 }} />
             </div>
+
+            {/* The big Upload button — opens the file picker directly */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                openFilePicker();
+              }}
+              style={{
+                background: "#059669",
+                color: "#ffffff",
+                border: "1px solid #047857",
+                borderRadius: 8,
+                padding: "13px 26px",
+                fontSize: 16,
+                fontWeight: 800,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                boxShadow: "0 4px 16px rgba(5,150,105,0.35)",
+              }}
+              data-testid="button-upload-file"
+            >
+              <Upload style={{ width: 18, height: 18 }} />
+              Upload a Song
+            </button>
+
             <p
               className="font-serif text-center text-sm"
-              style={{ textAlign: "center", fontSize: 14, margin: 0, color: "hsl(40, 10%, 62%)" }}
+              style={{ textAlign: "center", fontSize: 14, margin: 0, color: "hsl(222, 12%, 30%)" }}
             >
-              Drop your audio file here
+              ...or drop your audio file here
             </p>
-            <p className="text-xs" style={{ fontSize: 12, margin: 0, color: "hsl(40, 6%, 40%)" }}>
+            <p className="text-xs" style={{ fontSize: 12, margin: 0, color: "hsl(222, 10%, 36%)" }}>
               MP3, WAV, M4A, FLAC accepted
             </p>
             <input
@@ -385,6 +499,28 @@ export function UploadZone() {
               style={INPUT_STYLE}
               data-testid="input-search"
             />
+            {searchInput.trim() && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <p style={{ ...HELPER_STYLE, fontSize: 12 }}>
+                  Find it on a platform — opens in a new tab:
+                </p>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {SEARCH_PLATFORMS.map((platform) => (
+                    <a
+                      key={platform.name}
+                      href={platform.buildUrl(searchInput.trim())}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={PLATFORM_LINK_STYLE}
+                      data-testid={`link-search-${platform.name.replace(/\s+/g, "-").toLowerCase()}`}
+                    >
+                      {platform.name}
+                      <ExternalLink style={{ width: 11, height: 11, flexShrink: 0 }} />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
             <button
               onClick={handleSearchSubmit}
               disabled={!searchInput.trim()}

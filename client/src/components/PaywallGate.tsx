@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { resetTrial, TRIAL_LIMIT } from "@/lib/appState";
 
 const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
-const GOLD = "hsl(43, 72%, 54%)";
-const CRIMSON = "hsl(0, 60%, 52%)";
+const GOLD = "hsl(42, 95%, 34%)";
+const CRIMSON = "hsl(350, 72%, 38%)";
 
 const EMAIL_KEY = "cs_email_submitted";
 
@@ -55,7 +55,7 @@ export function PaywallGate({ onClose }: Props) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "rgba(8,4,2,0.92)",
+        background: "rgba(255,255,255,0.85)",
         backdropFilter: "blur(6px)",
         fontFamily: ARIAL,
         padding: "20px",
@@ -66,8 +66,9 @@ export function PaywallGate({ onClose }: Props) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         style={{
-          background: "hsl(355, 22%, 6%)",
-          border: `1px solid hsl(43, 35%, 18%)`,
+          background: "#ffffff",
+          border: `1px solid hsl(220, 15%, 88%)`,
+          borderTop: "3px solid hsl(42, 95%, 42%)",
           borderRadius: 12,
           padding: "36px 32px",
           maxWidth: 400,
@@ -76,7 +77,7 @@ export function PaywallGate({ onClose }: Props) {
           flexDirection: "column",
           alignItems: "center",
           gap: 18,
-          boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
+          boxShadow: "0 20px 60px rgba(184,134,11,0.22)",
           textAlign: "center",
         }}
       >
@@ -85,14 +86,14 @@ export function PaywallGate({ onClose }: Props) {
           width: 52,
           height: 2,
           borderRadius: 1,
-          background: "linear-gradient(90deg, transparent, hsl(43,72%,44%), transparent)",
+          background: "linear-gradient(90deg, transparent, hsl(43,89%,38%), transparent)",
         }} />
 
         {/* Icon */}
         <div style={{ fontSize: 36 }}>
           <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-            <circle cx="22" cy="22" r="21" stroke="hsl(43,50%,28%)" strokeWidth="1.5" fill="hsl(43,30%,10%)" />
-            <path d="M22 10 L32 16 V26 Q22 36 12 26 V16 Z" fill="hsl(43,38%,18%)" stroke="hsl(43,62%,46%)" strokeWidth="1.2" />
+            <circle cx="22" cy="22" r="21" stroke="hsl(43,60%,50%)" strokeWidth="1.5" fill="hsl(43,60%,96%)" />
+            <path d="M22 10 L32 16 V26 Q22 36 12 26 V16 Z" fill="hsl(43,60%,88%)" stroke="hsl(43,80%,36%)" strokeWidth="1.2" />
             <rect x="16" y="16.5" width="4" height="3" rx="0.5" fill="hsl(0,68%,52%)" opacity="0.9" />
             <rect x="20.5" y="16.5" width="3" height="3" rx="0.5" fill="hsl(120,52%,44%)" opacity="0.9" />
             <rect x="24" y="16.5" width="4" height="3" rx="0.5" fill="hsl(200,70%,54%)" opacity="0.9" />
@@ -116,9 +117,9 @@ export function PaywallGate({ onClose }: Props) {
         </h2>
 
         <p style={{
-          fontSize: 13,
+          fontSize: 14,
           lineHeight: 1.75,
-          color: "hsl(40, 10%, 60%)",
+          color: "hsl(222, 12%, 28%)",
           margin: 0,
           maxWidth: 320,
         }}>
@@ -128,7 +129,7 @@ export function PaywallGate({ onClose }: Props) {
         </p>
 
         {/* Divider */}
-        <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, transparent, rgba(184,134,11,0.15), transparent)" }} />
+        <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, transparent, rgba(184,134,11,0.4), transparent)" }} />
 
         {submitted ? (
           /* Unlocked state */
@@ -140,24 +141,24 @@ export function PaywallGate({ onClose }: Props) {
             <p style={{ fontSize: 15, fontWeight: 700, color: GOLD, margin: 0, letterSpacing: "0.04em" }}>
               Welcome to the Remnant.
             </p>
-            <p style={{ fontSize: 12, color: "hsl(40,8%,52%)", margin: 0, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 13, color: "hsl(222,12%,28%)", margin: 0, lineHeight: 1.6 }}>
               Your next {TRIAL_LIMIT} analyses are unlocked. The Prophet is ready.
             </p>
             <button
               onClick={handleUnlock}
               style={{
-                background: "hsl(142, 52%, 34%)",
+                background: "#059669",
                 color: "#ffffff",
                 fontFamily: ARIAL,
                 fontSize: 13,
                 fontWeight: 700,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                border: "1px solid hsl(142, 45%, 44%)",
+                border: "1px solid #047857",
                 borderRadius: 20,
                 padding: "0.6rem 2.4rem",
                 cursor: "pointer",
-                boxShadow: "0 2px 12px rgba(0,150,60,0.2)",
+                boxShadow: "0 2px 12px rgba(5,150,105,0.25)",
               }}
             >
               Continue
@@ -175,13 +176,13 @@ export function PaywallGate({ onClose }: Props) {
               autoFocus
               style={{
                 width: "100%",
-                background: "hsl(355, 12%, 10%)",
-                border: `1px solid ${error ? CRIMSON : "hsl(43, 30%, 20%)"}`,
+                background: "#ffffff",
+                border: `1px solid ${error ? CRIMSON : "hsl(220, 15%, 84%)"}`,
                 borderRadius: 6,
                 padding: "10px 16px",
                 textAlign: "center",
-                fontSize: 14,
-                color: "hsl(40, 12%, 82%)",
+                fontSize: 15,
+                color: "hsl(222, 20%, 12%)",
                 fontFamily: ARIAL,
                 outline: "none",
                 boxSizing: "border-box",
@@ -193,8 +194,8 @@ export function PaywallGate({ onClose }: Props) {
             <button
               onClick={handleSubmit}
               style={{
-                background: "hsl(43, 72%, 44%)",
-                color: "hsl(43, 10%, 8%)",
+                background: "linear-gradient(135deg, hsl(45, 95%, 50%), hsl(38, 90%, 42%))",
+                color: "hsl(222, 30%, 8%)",
                 fontFamily: ARIAL,
                 fontSize: 13,
                 fontWeight: 700,
@@ -204,7 +205,7 @@ export function PaywallGate({ onClose }: Props) {
                 borderRadius: 20,
                 padding: "0.6rem 2.4rem",
                 cursor: "pointer",
-                boxShadow: "0 2px 12px rgba(184,134,11,0.2)",
+                boxShadow: "0 4px 14px rgba(184,134,11,0.32)",
               }}
             >
               Unlock More Analyses
@@ -215,11 +216,11 @@ export function PaywallGate({ onClose }: Props) {
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                color: "hsl(40, 6%, 38%)",
-                fontSize: 11,
+                color: "hsl(222, 10%, 36%)",
+                fontSize: 12,
                 fontFamily: ARIAL,
                 textDecoration: "underline",
-                textDecorationColor: "hsl(40,6%,24%)",
+                textDecorationColor: "hsl(222,10%,60%)",
                 padding: "4px 0",
               }}
             >
@@ -228,7 +229,7 @@ export function PaywallGate({ onClose }: Props) {
           </div>
         )}
 
-        <p style={{ fontSize: 10, color: "hsl(40,6%,32%)", margin: 0, lineHeight: 1.5 }}>
+        <p style={{ fontSize: 11, color: "hsl(222,10%,36%)", margin: 0, lineHeight: 1.5 }}>
           No spam. No third-party sharing. For the remnant only.
         </p>
       </motion.div>

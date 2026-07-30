@@ -73,8 +73,8 @@ function useBrainwaveCanvas(
           : 0.55;
 
         const color = isTheta
-          ? `rgba(220, 38, 38, ${globalOpacity})`
-          : `rgba(34, 197, 94, ${globalOpacity})`;
+          ? `rgba(185, 28, 28, ${globalOpacity})`
+          : `rgba(5, 150, 105, ${globalOpacity})`;
 
         ctx.beginPath();
         ctx.lineWidth = 1.5;
@@ -109,7 +109,7 @@ function useBrainwaveCanvas(
         if (isTheta && progress > 0.3) {
           ctx.beginPath();
           ctx.lineWidth = 0.8;
-          ctx.strokeStyle = `rgba(220, 38, 38, ${globalOpacity * 0.4})`;
+          ctx.strokeStyle = `rgba(185, 28, 28, ${globalOpacity * 0.4})`;
           for (let x = startX; x <= endX; x += 1) {
             const localX = x - startX;
             const t = localX / segWidth;
@@ -126,9 +126,9 @@ function useBrainwaveCanvas(
 
       const scanX = (offsetRef.current * 1.5) % w;
       const gradient = ctx.createLinearGradient(scanX - 30, 0, scanX + 30, 0);
-      gradient.addColorStop(0, "rgba(255,255,255,0)");
-      gradient.addColorStop(0.5, "rgba(255,255,255,0.06)");
-      gradient.addColorStop(1, "rgba(255,255,255,0)");
+      gradient.addColorStop(0, "rgba(184,134,11,0)");
+      gradient.addColorStop(0.5, "rgba(184,134,11,0.07)");
+      gradient.addColorStop(1, "rgba(184,134,11,0)");
       ctx.fillStyle = gradient;
       ctx.fillRect(scanX - 30, 0, 60, h);
 
@@ -243,7 +243,7 @@ export function ListeningState() {
       <div className="flex flex-col items-center gap-1">
         <p
           className="font-serif text-lg tracking-wide"
-          style={{ color: "hsl(43, 74%, 52%)" }}
+          style={{ color: "hsl(42, 95%, 34%)", fontWeight: 700 }}
           data-testid="text-listening"
         >
           Gad listens.
@@ -271,18 +271,21 @@ export function ListeningState() {
       <div className="w-full max-w-[260px] flex flex-col items-center gap-2">
         <div
           className="w-full h-1 rounded-full"
-          style={{ background: "hsl(20, 6%, 16%)" }}
+          style={{ background: "hsl(220, 15%, 90%)" }}
         >
           <motion.div
             className="h-full rounded-full"
-            style={{ background: "hsl(43, 80%, 48%)" }}
+            style={{
+              background: "linear-gradient(90deg, hsl(45, 95%, 50%), hsl(38, 90%, 42%))",
+              boxShadow: "0 0 8px rgba(184,134,11,0.45)",
+            }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5 }}
           />
         </div>
         <p
           className="text-xs tabular-nums"
-          style={{ color: "hsl(40, 8%, 52%)" }}
+          style={{ color: "hsl(222, 10%, 34%)" }}
           data-testid="text-timer"
         >
           {timeLabel}
@@ -293,22 +296,24 @@ export function ListeningState() {
         className="w-full relative rounded-md overflow-hidden"
         style={{
           height: "90px",
-          border: "1px solid hsl(40, 8%, 16%)",
-          background: "hsl(20, 6%, 8%)",
+          border: "1px solid hsl(220, 15%, 88%)",
+          borderTop: "2px solid #059669",
+          background: "#ffffff",
+          boxShadow: "0 8px 24px rgba(5,150,105,0.12)",
         }}
         data-testid="brainwave-canvas"
       >
         <canvas ref={canvasRef} className="w-full h-full" />
         <div className="absolute bottom-1.5 left-2 flex items-center gap-3">
           <div className="flex items-center gap-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
-            <span className="text-[9px]" style={{ color: "hsl(40, 6%, 45%)" }}>
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+            <span className="text-[9px]" style={{ color: "hsl(222, 10%, 34%)" }}>
               Alpha
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
-            <span className="text-[9px]" style={{ color: "hsl(40, 6%, 45%)" }}>
+            <div className="w-1.5 h-1.5 rounded-full bg-red-700" />
+            <span className="text-[9px]" style={{ color: "hsl(222, 10%, 34%)" }}>
               Theta
             </span>
           </div>
@@ -322,7 +327,7 @@ export function ListeningState() {
         exit={{ opacity: 0, y: -6 }}
         transition={{ duration: 0.6 }}
         className="text-xs text-center tracking-wider italic"
-        style={{ color: "hsl(0, 55%, 60%)" }}
+        style={{ color: "hsl(350, 72%, 38%)" }}
         data-testid="text-status-message"
       >
         {STATUS_MESSAGES[statusIndex]}
@@ -330,7 +335,7 @@ export function ListeningState() {
 
       <p
         className="text-[10px] italic text-center tracking-wider"
-        style={{ color: "hsl(40, 6%, 35%)" }}
+        style={{ color: "hsl(222, 10%, 36%)" }}
       >
         The waves show rhythm, repetition, and dynamic movement.
       </p>

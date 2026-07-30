@@ -58,7 +58,7 @@ export function generateCertificate(userName: string, options: CertificateOption
   doc.rect(12, 12, pageWidth - 24, pageHeight - 24);
 
   // ── Header ──────────────────────────────────────────────────────────────
-  doc.setFont("times", "bold");
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
   doc.text("CLEAR SIGNAL", pageWidth / 2, 25, { align: "center" });
@@ -67,21 +67,22 @@ export function generateCertificate(userName: string, options: CertificateOption
   doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
   doc.line(60, 30, pageWidth - 60, 30);
 
-  doc.setFont("times", "bold");
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(24);
   doc.text("ANALYSIS REPORT", pageWidth / 2, 42, { align: "center" });
 
   // ── Listener / track / date ─────────────────────────────────────────────
   const displayName = (userName || "").trim() || "Listener";
 
-  doc.setFont("times", "normal");
+  doc.setFont("helvetica", "normal");
   doc.setFontSize(12);
   doc.setTextColor(INK[0], INK[1], INK[2]);
   doc.text("Prepared for:", pageWidth / 2, 52, { align: "center" });
 
+  // Recipient name is the one serif accent on the report — Times bold, rich gold.
   doc.setFont("times", "bold");
   doc.setFontSize(20);
-  doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+  doc.setTextColor(184, 134, 11);
   doc.text(displayName.toUpperCase(), pageWidth / 2, 61, { align: "center" });
 
   doc.setLineWidth(0.5);
@@ -93,7 +94,7 @@ export function generateCertificate(userName: string, options: CertificateOption
     day: "numeric",
   });
 
-  doc.setFont("times", "normal");
+  doc.setFont("helvetica", "normal");
   doc.setFontSize(12);
   doc.setTextColor(INK[0], INK[1], INK[2]);
   if (songFileName && songFileName.trim()) {
@@ -103,7 +104,7 @@ export function generateCertificate(userName: string, options: CertificateOption
   doc.text(`Date of analysis: ${today}`, pageWidth / 2, 80, { align: "center" });
 
   // ── Verdict + overall score ─────────────────────────────────────────────
-  doc.setFont("times", "bolditalic");
+  doc.setFont("helvetica", "bolditalic");
   doc.setFontSize(13);
   if (verdict === "calf") {
     doc.setTextColor(CRIMSON[0], CRIMSON[1], CRIMSON[2]);
@@ -119,7 +120,7 @@ export function generateCertificate(userName: string, options: CertificateOption
   if (analysisData && typeof analysisData.signalClarityScore === "number") {
     const overall = Math.round(analysisData.signalClarityScore);
     const oc = scoreColor(overall);
-    doc.setFont("times", "bold");
+    doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
     doc.setTextColor(oc[0], oc[1], oc[2]);
     doc.text(`Signal Clarity Score: ${overall} / 100`, pageWidth / 2, 99, { align: "center" });
@@ -130,7 +131,7 @@ export function generateCertificate(userName: string, options: CertificateOption
   doc.line(40, 104, pageWidth - 40, 104);
 
   // ── Six-category breakdown ──────────────────────────────────────────────
-  doc.setFont("times", "bold");
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
   doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
   doc.text("SIX-CATEGORY BREAKDOWN", pageWidth / 2, 112, { align: "center", charSpace: 0.8 });
@@ -149,17 +150,17 @@ export function generateCertificate(userName: string, options: CertificateOption
       const label = cat && cat.label ? String(cat.label) : "No data recorded for this category.";
       const sc = score !== null ? scoreColor(score) : INK;
 
-      doc.setFont("times", "bold");
+      doc.setFont("helvetica", "bold");
       doc.setFontSize(10.5);
       doc.setTextColor(INK[0], INK[1], INK[2]);
       doc.text(truncate(row.title, 42), x, y);
 
-      doc.setFont("times", "bold");
+      doc.setFont("helvetica", "bold");
       doc.setFontSize(10.5);
       doc.setTextColor(sc[0], sc[1], sc[2]);
       doc.text(score !== null ? `${score} / 100` : "n/a", x + colW, y, { align: "right" });
 
-      doc.setFont("times", "italic");
+      doc.setFont("helvetica", "italic");
       doc.setFontSize(8.5);
       doc.setTextColor(120, 100, 70);
       doc.text(truncate(label, 68), x, y + 5);
@@ -173,7 +174,7 @@ export function generateCertificate(userName: string, options: CertificateOption
       }
     });
   } else {
-    doc.setFont("times", "italic");
+    doc.setFont("helvetica", "italic");
     doc.setFontSize(11);
     doc.setTextColor(120, 100, 70);
     doc.text("Full category data was not available for this analysis session.", pageWidth / 2, 135, { align: "center" });
@@ -184,12 +185,12 @@ export function generateCertificate(userName: string, options: CertificateOption
   doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
   doc.line(60, 172, pageWidth - 60, 172);
 
-  doc.setFont("times", "normal");
+  doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
   doc.setTextColor(PURPLE[0], PURPLE[1], PURPLE[2]);
   doc.text("Issued by: Clear Signal - Music discernment for all nations", pageWidth / 2, 180, { align: "center" });
 
-  doc.setFont("times", "normal");
+  doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.text("Criteria reviewed. Report generated by Clear Signal.", pageWidth / 2, 187, { align: "center" });
 
@@ -201,7 +202,7 @@ export function generateCertificate(userName: string, options: CertificateOption
   doc.setFillColor(200, 60, 60);
   doc.circle(sealX, sealY, 8.2, "F");
 
-  doc.setFont("times", "bold");
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.setTextColor(255, 253, 240);
   doc.text("CLEAR", sealX, sealY - 1, { align: "center" });

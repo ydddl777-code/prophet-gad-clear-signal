@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 import { useAppState } from "@/lib/appState";
 import { GreetingFlow } from "@/components/GreetingFlow";
 import { NameFlow } from "@/components/NameFlow";
@@ -8,42 +10,22 @@ import { VerdictDisplay } from "@/components/VerdictDisplay";
 import { ScriptureDialog } from "@/components/ScriptureDialog";
 import { ControlToggles } from "@/components/ControlToggles";
 import { BackgroundPlayer } from "@/components/BackgroundPlayer";
+import { NavArrows } from "@/components/NavArrows";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { AnalysisData } from "@/lib/appState";
 
 const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
 
-const DEMO_ANALYSIS: AnalysisData = {
-  signalClarityScore: 78,
-  bpmProfile:          { score: 82, label: "Measured tempo - low concern profile" },
-  lyricalDoctrine:     { score: 88, label: "Clear lyric signal detected" },
-  tranceInducement:    { score: 75, label: "Low trance-inducement risk" },
-  loopRepetition:      { score: 72, label: "Natural variation — low repetition saturation" },
-  culturalDegradation: { score: 85, label: "No cultural degradation markers" },
-  rhythmicArchetype:   { score: 79, label: "Constructive rhythmic alignment" },
-};
-
-const NAV_BTN: import("react").CSSProperties = {
-  background: "rgba(14,8,6,0.7)",
-  border: "1px solid hsl(43,35%,20%)",
-  borderRadius: "50%",
-  width: 34,
-  height: 34,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  cursor: "pointer",
-  color: "hsl(43,45%,38%)",
-  position: "fixed" as const,
-  top: "50%",
-  transform: "translateY(-50%)",
-  zIndex: 50,
-};
-
 export default function Home() {
-  const { phase, setPhase, setAnalysisData, setVerdict, setSongFileName } = useAppState();
+  const { phase, setPhase, songFileName } = useAppState();
+  const [, navigate] = useLocation();
+  const [gateMessage, setGateMessage] = useState("");
   const showMainContent = phase === "main" || phase === "listening" || phase === "result";
+
+  useEffect(() => {
+    if (!gateMessage) return;
+    const timer = setTimeout(() => setGateMessage(""), 5000);
+    return () => clearTimeout(timer);
+  }, [gateMessage]);
 
   const goBack = () => {
     if (phase === "main")           setPhase("name");
@@ -53,21 +35,20 @@ export default function Home() {
 
   const goForward = () => {
     if (phase === "main") {
-      setSongFileName("Demo — Thunder Road Gospel");
-      setAnalysisData(DEMO_ANALYSIS);
-      setVerdict("ark");
-      setPhase("result");
+      // HARD GATE: no verdict without an actually submitted song.
+      setGateMessage(
+        "Please upload a song, paste a link, or search first — then the analysis can begin."
+      );
     } else if (phase === "listening") {
-      setPhase("result");
+      // Analysis already running on a real submission — allow skipping the wait.
+      if (songFileName) setPhase("result");
+    } else if (phase === "result") {
+      navigate("/about");
     }
   };
 
-  const showForward = phase === "main" || phase === "listening";
-
   return (
     <div className="relative min-h-screen chamber-bg" style={{ fontFamily: ARIAL }}>
-      <div className="absolute inset-0 bg-gradient-to-b from-red-900/8 via-transparent to-yellow-900/6 pointer-events-none" />
-
       <GreetingFlow />
       <NameFlow />
 
@@ -81,17 +62,12 @@ export default function Home() {
           >
             <div className="w-full crimson-bar h-0.5 absolute top-0 left-0 right-0 opacity-80" />
 
-            {/* Left nav — back */}
-            <button onClick={goBack} style={{ ...NAV_BTN, left: 10 }} data-testid="button-back-main">
-              <ChevronLeft style={{ width: 15, height: 15 }} />
-            </button>
-
-            {/* Right nav — forward */}
-            {showForward && (
-              <button onClick={goForward} style={{ ...NAV_BTN, right: 10 }} data-testid="button-forward-main">
-                <ChevronRight style={{ width: 15, height: 15 }} />
-              </button>
-            )}
+            <NavArrows
+              onBack={goBack}
+              onForward={goForward}
+              backLabel="Go back"
+              forwardLabel={phase === "result" ? "About the analysis" : "Continue"}
+            />
 
             <ControlToggles />
 
@@ -104,11 +80,11 @@ export default function Home() {
             >
               <p
                 style={{
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: 700,
                   letterSpacing: "0.16em",
                   textTransform: "uppercase",
-                  color: "hsl(0, 60%, 52%)",
+                  color: "hsl(350, 72%, 36%)",
                   fontFamily: ARIAL,
                 }}
                 data-testid="text-subheader"
@@ -116,6 +92,46 @@ export default function Home() {
                 Music Discernment · For All Nations
               </p>
             </motion.div>
+
+            {/* Friendly gate message — shown when forward is pressed with no song */}
+            <AnimatePresence>
+              {gateMessage && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  style={{
+                    position: "fixed",
+                    top: 64,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    zIndex: 90,
+                    background: "#ffffff",
+                    border: "2px solid #059669",
+                    borderRadius: 10,
+                    padding: "12px 20px",
+                    maxWidth: 420,
+                    width: "calc(100% - 40px)",
+                    boxShadow: "0 8px 28px rgba(5,150,105,0.20)",
+                  }}
+                  data-testid="text-gate-message"
+                >
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: 15,
+                      lineHeight: 1.5,
+                      color: "hsl(161, 84%, 16%)",
+                      fontFamily: ARIAL,
+                      textAlign: "center",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {gateMessage}
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <div className="flex-1 flex flex-col items-center justify-center gap-4 w-full max-w-lg">
               <GadCharacter />
@@ -125,10 +141,10 @@ export default function Home() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
                 style={{
-                  fontSize: 12,
+                  fontSize: 14,
                   fontStyle: "italic",
                   textAlign: "center",
-                  color: "hsl(40, 10%, 44%)",
+                  color: "hsl(222, 10%, 34%)",
                   fontFamily: ARIAL,
                   margin: 0,
                 }}

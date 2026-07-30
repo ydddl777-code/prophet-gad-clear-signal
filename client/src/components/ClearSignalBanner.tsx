@@ -6,24 +6,24 @@ export function ClearSignalBanner() {
 
   const borderColor =
     verdict === "ark"
-      ? "hsl(43, 80%, 40%)"
+      ? "hsl(43, 85%, 40%)"
       : verdict === "calf"
-      ? "hsl(0, 60%, 35%)"
-      : "hsl(40, 8%, 22%)";
+      ? "hsl(0, 65%, 36%)"
+      : "hsl(40, 15%, 78%)";
 
   const textColor =
     verdict === "ark"
-      ? "hsl(43, 80%, 60%)"
+      ? "hsl(43, 89%, 30%)"
       : verdict === "calf"
-      ? "hsl(0, 60%, 58%)"
-      : "hsl(40, 8%, 55%)";
+      ? "hsl(0, 65%, 34%)"
+      : "hsl(25, 12%, 30%)";
 
   return (
     <motion.div
       className="relative px-6 py-1.5 rounded-sm overflow-visible"
       style={{
         border: `1px solid ${borderColor}`,
-        background: "hsl(20, 6%, 9%)",
+        background: "#ffffff",
       }}
       animate={{
         boxShadow:
@@ -46,8 +46,8 @@ export function ClearSignalBanner() {
         >
           Clear Signal
         </span>
-        <span style={{ color: "hsl(40, 6%, 30%)" }}>—</span>
-        <span className="text-[10px] tracking-widest uppercase" style={{ color: "hsl(40, 6%, 42%)" }}>
+        <span style={{ color: "hsl(25, 10%, 40%)" }}>—</span>
+        <span className="text-[10px] tracking-widest uppercase" style={{ color: "hsl(25, 10%, 34%)" }}>
           Rhythm · Repetition · Signal
         </span>
       </div>

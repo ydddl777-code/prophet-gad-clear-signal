@@ -60,7 +60,7 @@ export function ScriptureDialog() {
         <Button
           size="icon"
           variant="ghost"
-          className="fixed bottom-4 left-4 z-40 text-amber-700/60 dark:text-amber-400/60"
+          className="fixed bottom-4 left-4 z-40 text-amber-800"
           data-testid="button-scripture-info"
         >
           <Info className="w-5 h-5" />
@@ -70,7 +70,7 @@ export function ScriptureDialog() {
         <DialogHeader>
           <DialogTitle
             className="font-serif text-lg"
-            style={{ color: "hsl(43, 74%, 49%)" }}
+            style={{ color: "hsl(43, 89%, 30%)" }}
           >
             About Prophet Gad
           </DialogTitle>
@@ -89,7 +89,7 @@ export function ScriptureDialog() {
                 <div key={s.ref} className="flex flex-col gap-0.5">
                   <span
                     className="text-xs font-medium tracking-wide"
-                    style={{ color: "hsl(43, 74%, 42%)" }}
+                    style={{ color: "hsl(43, 89%, 28%)" }}
                   >
                     {s.ref}
                   </span>

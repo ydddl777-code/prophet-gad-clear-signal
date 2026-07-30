@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppState } from "@/lib/appState";
 import { motion } from "framer-motion";
-import { speakHuldah, speakElevenLabs, speakBrowser } from "@/lib/tts";
-import { ChevronLeft } from "lucide-react";
+import { speakHuldah, speakElevenLabs, speakBrowser, playClip, VOICE_CLIPS } from "@/lib/tts";
+import { NavArrows } from "@/components/NavArrows";
 
 const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
 
 export function NameFlow() {
   const { phase, setPhase, setUserName, voiceEnabled } = useAppState();
   const [nameInput, setNameInput] = useState("");
+  const hasGuided = useRef(false);
+
+  // Huldah's fixed guide greeting (HeyGen render) when her page opens.
+  useEffect(() => {
+    if (phase === "name" && voiceEnabled && !hasGuided.current) {
+      hasGuided.current = true;
+      playClip(VOICE_CLIPS.huldahGuide);
+    }
+    if (phase !== "name") hasGuided.current = false;
+  }, [phase, voiceEnabled]);
 
   const handleContinue = async () => {
     const name = nameInput.trim();
@@ -21,7 +31,9 @@ export function NameFlow() {
       }
     } else {
       if (voiceEnabled) {
-        speakHuldah("Welcome. Submit a song and the Prophet will render a verdict.");
+        playClip(VOICE_CLIPS.huldahUpload).then((ok) => {
+          if (!ok) speakHuldah("Welcome. Submit a song and the Prophet will render a verdict.");
+        });
       }
     }
     setPhase("main");
@@ -29,7 +41,9 @@ export function NameFlow() {
 
   const handleSkip = () => {
     if (voiceEnabled) {
-      speakHuldah("Welcome. Submit a song and the Prophet will render a verdict.");
+      playClip(VOICE_CLIPS.huldahUpload).then((ok) => {
+        if (!ok) speakHuldah("Welcome. Submit a song and the Prophet will render a verdict.");
+      });
     }
     setPhase("main");
   };
@@ -40,65 +54,21 @@ export function NameFlow() {
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{
-        background: "hsl(355, 22%, 6%)",
+        background: "hsl(210, 20%, 98.5%)",
         backgroundImage: `
-          radial-gradient(ellipse at 30% 30%, rgba(180,10,10,0.12) 0%, transparent 60%),
-          radial-gradient(ellipse at 75% 70%, rgba(120,5,5,0.09) 0%, transparent 55%),
-          radial-gradient(ellipse at 50% 100%, rgba(184,134,11,0.06) 0%, transparent 50%)
+          radial-gradient(ellipse at 30% 30%, rgba(212,160,23,0.07) 0%, transparent 60%),
+          radial-gradient(ellipse at 75% 70%, rgba(5,150,105,0.05) 0%, transparent 55%),
+          radial-gradient(ellipse at 50% 100%, rgba(212,160,23,0.06) 0%, transparent 50%)
         `,
         fontFamily: ARIAL,
       }}
     >
-      {/* Back — top left */}
-      <button
-        onClick={() => setPhase("greeting")}
-        style={{
-          position: "absolute",
-          top: 16,
-          left: 16,
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          color: "hsl(43, 45%, 38%)",
-          display: "flex",
-          alignItems: "center",
-          gap: 4,
-          fontSize: 13,
-          fontFamily: ARIAL,
-          padding: "6px 8px",
-        }}
-        data-testid="button-back-to-greeting"
-      >
-        <ChevronLeft style={{ width: 16, height: 16 }} />
-        Back
-      </button>
-
-      {/* Forward — far right, vertically centered */}
-      <button
-        onClick={() => setPhase("main")}
-        title="Skip to main"
-        style={{
-          position: "fixed",
-          right: 12,
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 60,
-          background: "rgba(14,8,6,0.7)",
-          border: "1px solid hsl(43,35%,20%)",
-          borderRadius: "50%",
-          width: 34,
-          height: 34,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-          color: "hsl(43,45%,38%)",
-          fontSize: 18,
-        }}
-        data-testid="button-forward-to-main"
-      >
-        ›
-      </button>
+      <NavArrows
+        onBack={() => setPhase("greeting")}
+        onForward={() => setPhase("main")}
+        backLabel="Back to welcome"
+        forwardLabel="Skip to the analysis"
+      />
 
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -111,15 +81,16 @@ export function NameFlow() {
           width: 48,
           height: 2,
           borderRadius: 1,
-          background: "linear-gradient(90deg, transparent, hsl(43,72%,44%), transparent)",
+          background: "linear-gradient(90deg, transparent, hsl(42,95%,45%), transparent)",
         }} />
 
         {/* Huldah label */}
         <p style={{
-          fontSize: 10,
+          fontSize: 11,
+          fontWeight: 700,
           letterSpacing: "0.28em",
           textTransform: "uppercase",
-          color: "hsl(43, 45%, 42%)",
+          color: "hsl(42, 95%, 34%)",
           fontFamily: ARIAL,
           margin: 0,
           textAlign: "center",
@@ -130,7 +101,7 @@ export function NameFlow() {
         {/* Question */}
         <h2 style={{
           fontSize: "clamp(1.15rem, 4vw, 1.5rem)",
-          color: "hsl(43, 78%, 62%)",
+          color: "hsl(42, 95%, 34%)",
           fontFamily: ARIAL,
           fontWeight: 700,
           letterSpacing: "0.04em",
@@ -142,20 +113,20 @@ export function NameFlow() {
         </h2>
 
         <p style={{
-          fontSize: 13,
+          fontSize: 14,
           lineHeight: 1.55,
           textAlign: "center",
-          color: "hsl(40, 10%, 56%)",
+          color: "hsl(222, 12%, 28%)",
           fontFamily: ARIAL,
           margin: 0,
-          maxWidth: 260,
+          maxWidth: 280,
         }}>
           Share your name so Prophet Gad can address you directly in his verdict.
         </p>
 
         <p style={{
-          fontSize: 11,
-          color: "hsl(40, 8%, 38%)",
+          fontSize: 12,
+          color: "hsl(222, 10%, 36%)",
           fontFamily: ARIAL,
           margin: 0,
           textAlign: "center",
@@ -167,7 +138,7 @@ export function NameFlow() {
         <div style={{
           width: "100%",
           height: 1,
-          background: "linear-gradient(90deg, transparent, rgba(184,134,11,0.18), transparent)",
+          background: "linear-gradient(90deg, transparent, rgba(212,160,23,0.5), transparent)",
         }} />
 
         {/* Input */}
@@ -179,15 +150,16 @@ export function NameFlow() {
           onKeyDown={(e) => e.key === "Enter" && handleContinue()}
           style={{
             width: "100%",
-            background: "hsl(355, 12%, 10%)",
-            border: "1px solid hsl(43, 30%, 20%)",
+            background: "#ffffff",
+            border: "1px solid hsl(220, 15%, 84%)",
             borderRadius: 6,
             padding: "10px 16px",
             textAlign: "center",
-            fontSize: 14,
-            color: "hsl(40, 12%, 82%)",
+            fontSize: 15,
+            color: "hsl(222, 20%, 12%)",
             fontFamily: ARIAL,
             outline: "none",
+            boxShadow: "0 2px 10px rgba(184,134,11,0.10)",
           }}
           autoFocus
           data-testid="input-name"
@@ -197,18 +169,18 @@ export function NameFlow() {
         <button
           onClick={handleContinue}
           style={{
-            background: "hsl(142, 52%, 34%)",
+            background: "#059669",
             color: "#ffffff",
             fontFamily: ARIAL,
-            fontSize: 13,
+            fontSize: 14,
             fontWeight: 700,
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            border: "1px solid hsl(142, 45%, 44%)",
+            border: "1px solid #047857",
             borderRadius: 20,
-            padding: "0.5rem 2.4rem",
+            padding: "0.55rem 2.4rem",
             cursor: "pointer",
-            boxShadow: "0 2px 12px rgba(0,150,60,0.18)",
+            boxShadow: "0 4px 14px rgba(5,150,105,0.32)",
           }}
           data-testid="button-continue"
         >
@@ -219,14 +191,14 @@ export function NameFlow() {
         <button
           onClick={handleSkip}
           style={{
-            color: "hsl(40, 6%, 40%)",
+            color: "hsl(222, 10%, 36%)",
             background: "none",
             border: "none",
             cursor: "pointer",
             textDecoration: "underline",
-            textDecorationColor: "hsl(40,6%,26%)",
+            textDecorationColor: "hsl(222, 10%, 60%)",
             fontFamily: ARIAL,
-            fontSize: 12,
+            fontSize: 13,
           }}
           data-testid="button-skip-name"
         >

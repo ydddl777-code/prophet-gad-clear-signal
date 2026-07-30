@@ -1,43 +1,54 @@
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import {
+  ArrowLeft,
+  ExternalLink,
+  AudioWaveform,
+  BookOpen,
+  TriangleAlert,
+  Repeat,
+  Globe,
+  Drum,
+} from "lucide-react";
+import { NavArrows } from "@/components/NavArrows";
 
 const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
 
-const GOLD    = "hsl(43, 74%, 52%)";
-const CRIMSON = "hsl(0, 72%, 32%)";
-const DIM     = "hsl(40, 10%, 52%)";
-const CARD_BG = "hsl(20, 6%, 9%)";
-const BORDER  = "hsl(40, 8%, 14%)";
+const GOLD    = "hsl(42, 95%, 36%)";
+const CRIMSON = "hsl(352, 70%, 33%)";
+const DIM     = "hsl(222, 10%, 30%)";
+const BODY    = "hsl(222, 20%, 15%)";
+const CARD_BG = "#ffffff";
+const BORDER  = "hsl(220, 15%, 88%)";
 
 const CATEGORIES = [
   {
-    icon: "♩",
+    icon: AudioWaveform,
     title: "BPM & Frequency Profile",
     desc: "Tempo analysis against known brainwave entrainment thresholds. Safe zone: 60–100 BPM. Genre-appropriate patterns (reggae, roots, dub, bachata) are recognized and not penalized.",
   },
   {
-    icon: "📖",
+    icon: BookOpen,
     title: "Lyrical Doctrine",
     desc: "Lyric clarity, source language, and red-flag terminology detection. Clear declaration, coherent meaning, and KJV-rooted language score high.",
   },
   {
-    icon: "⚠",
+    icon: TriangleAlert,
     title: "Trance Inducement Risk",
     desc: "Repetition patterns, monotony index, and entrainment duration. Distinguishes genre-appropriate repetition from monotonous trance induction.",
   },
   {
-    icon: "🔁",
+    icon: Repeat,
     title: "Loop & Repetition Analysis",
     desc: "Mantra-like structures that bypass conscious engagement. Measures whether repetition serves rhythm or creates dissociative saturation.",
   },
   {
-    icon: "🌍",
+    icon: Globe,
     title: "Cultural Degradation Markers",
     desc: "Historical patterns associated with civilizational decline through music. Applied equally across all cultural traditions and genres.",
   },
   {
-    icon: "🥁",
+    icon: Drum,
     title: "Rhythmic Archetype Classification",
     desc: "Genre-aware analysis that distinguishes cultural rhythm from manipulative repetition. Roots, dub, nyabinghi, and prophetic percussion are evaluated in context.",
   },
@@ -55,8 +66,11 @@ function WaveformHero() {
         position: "relative",
         overflow: "hidden",
         borderRadius: 8,
-        background: "hsl(20, 6%, 7%)",
+        background: "#ffffff",
         border: `1px solid ${BORDER}`,
+        borderTop: "2px solid hsl(42, 95%, 45%)",
+        borderBottom: "2px solid hsl(42, 95%, 45%)",
+        boxShadow: "0 8px 28px rgba(184,134,11,0.16)",
       }}
     >
       <svg
@@ -66,10 +80,10 @@ function WaveformHero() {
       >
         <defs>
           <linearGradient id="wg" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stopColor="hsl(0,72%,32%)"  stopOpacity="0.3" />
-            <stop offset="40%"  stopColor="hsl(43,74%,52%)" stopOpacity="0.9" />
-            <stop offset="70%"  stopColor="hsl(43,74%,52%)" stopOpacity="0.7" />
-            <stop offset="100%" stopColor="hsl(0,72%,32%)"  stopOpacity="0.2" />
+            <stop offset="0%"   stopColor="hsl(355,75%,42%)" stopOpacity="0.55" />
+            <stop offset="40%"  stopColor="hsl(352,70%,33%)" stopOpacity="0.98" />
+            <stop offset="70%"  stopColor="hsl(42,92%,45%)" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="hsl(161,84%,28%)" stopOpacity="0.45" />
           </linearGradient>
         </defs>
         {/* Main waveform bars */}
@@ -92,13 +106,13 @@ function WaveformHero() {
           );
         })}
         {/* Center line */}
-        <line x1="0" y1="65" x2="680" y2="65" stroke="hsl(43,40%,30%)" strokeWidth="0.5" strokeOpacity="0.4" />
+        <line x1="0" y1="65" x2="680" y2="65" stroke="hsl(42,90%,45%)" strokeWidth="0.5" strokeOpacity="0.6" />
       </svg>
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to right, hsl(20,8%,7%) 0%, transparent 12%, transparent 88%, hsl(20,8%,7%) 100%)",
+          background: "linear-gradient(to right, #ffffff 0%, transparent 12%, transparent 88%, #ffffff 100%)",
           pointerEvents: "none",
         }}
       />
@@ -119,19 +133,20 @@ function Section({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.7 }}
-      style={{ width: "100%", maxWidth: 680 }}
+      style={{ width: "100%", maxWidth: 680, marginLeft: "auto", marginRight: "auto" }}
     >
       <h2
         style={{
           fontFamily: ARIAL,
           fontWeight: 700,
-          fontSize: 15,
+          fontSize: 17,
           letterSpacing: "0.12em",
           textTransform: "uppercase",
-          color: GOLD,
+          color: CRIMSON,
           margin: "0 0 14px",
           paddingBottom: 8,
           borderBottom: `1px solid ${BORDER}`,
+          textAlign: "center",
         }}
       >
         {title}
@@ -148,14 +163,22 @@ export default function About() {
     <div
       style={{
         minHeight: "100vh",
-        background: "hsl(20, 8%, 6%)",
+        background: "hsl(210, 20%, 98.5%)",
         fontFamily: ARIAL,
-        color: "hsl(40, 15%, 86%)",
+        color: BODY,
         overflowX: "hidden",
       }}
     >
       {/* Top crimson bar */}
       <div style={{ height: 2, background: `linear-gradient(to right, transparent, ${CRIMSON}, transparent)` }} />
+
+      {/* Green brand arrows — in/out of the About page */}
+      <NavArrows
+        onBack={() => navigate("/")}
+        onForward={() => navigate("/")}
+        backLabel="Return to the analysis"
+        forwardLabel="Return to the analysis"
+      />
 
       {/* Back button */}
       <div style={{ padding: "14px 20px" }}>
@@ -169,14 +192,15 @@ export default function About() {
             display: "flex",
             alignItems: "center",
             gap: 6,
-            fontSize: 12,
+            fontSize: 14,
+            fontWeight: 700,
             fontFamily: ARIAL,
             letterSpacing: "0.06em",
             padding: "4px 0",
           }}
           data-testid="button-back-about"
         >
-          <ArrowLeft style={{ width: 14, height: 14 }} />
+          <ArrowLeft style={{ width: 15, height: 15 }} />
           Return to Analysis
         </button>
       </div>
@@ -197,7 +221,8 @@ export default function About() {
       >
         <p
           style={{
-            fontSize: 10,
+            fontSize: 15,
+            fontWeight: 700,
             letterSpacing: "0.2em",
             textTransform: "uppercase",
             color: CRIMSON,
@@ -205,14 +230,19 @@ export default function About() {
             margin: 0,
           }}
         >
-          Music Discernment · Remnant Seed Sound Framework
+          Music Discernment · In Harmony with Heaven
         </p>
         <h1
           style={{
             fontFamily: ARIAL,
             fontWeight: 800,
-            fontSize: "clamp(22px, 5vw, 36px)",
+            fontSize: "clamp(24px, 5vw, 38px)",
+            background: "linear-gradient(135deg, hsl(45, 95%, 50%), hsl(38, 90%, 42%))",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            WebkitTextFillColor: "transparent",
             color: GOLD,
+            filter: "drop-shadow(0 1px 1px rgba(184,134,11,0.35))",
             letterSpacing: "0.04em",
             margin: 0,
             lineHeight: 1.2,
@@ -223,8 +253,8 @@ export default function About() {
         </h1>
         <p
           style={{
-            fontSize: 15,
-            color: "hsl(40, 12%, 68%)",
+            fontSize: 19,
+            color: BODY,
             fontStyle: "italic",
             margin: 0,
             fontFamily: ARIAL,
@@ -250,7 +280,7 @@ export default function About() {
       >
         {/* Section 1 */}
         <Section title="Sound Shapes the Mind">
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "hsl(40, 10%, 72%)", margin: 0 }}>
+          <p style={{ fontSize: 16, lineHeight: 1.8, color: BODY, margin: 0 }}>
             Every sound that enters the human ear triggers a measurable neurological response. This is not
             opinion — it is documented neuroscience. Specific frequencies, tempos, and rhythmic patterns
             can induce altered states of consciousness, bypass critical thinking, and create emotional
@@ -258,15 +288,17 @@ export default function About() {
             music you allow into your worship, your home, and your spirit has been designed to help you —
             or to manipulate you.
           </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "hsl(40, 10%, 72%)", margin: "14px 0 0" }}>
-            Clear Signal applies a framework built on decades of neuroscience research and thousands of
-            years of documented history to answer that question for any song you submit.
+          <p style={{ fontSize: 16, lineHeight: 1.8, color: BODY, margin: "14px 0 0" }}>
+            Clear Signal draws on decades of neuroscience research and thousands of years of documented
+            history to answer that question for any song you submit. The measure is simple and universal:
+            harmony with heaven — music the Lord would accept, music the angels could sing, music fit for
+            every tribe and nation, with nothing in it that offends or manipulates.
           </p>
         </Section>
 
         {/* Section 2 */}
         <Section title="Civilizations Have Known This for Millennia">
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "hsl(40, 10%, 72%)", margin: 0 }}>
+          <p style={{ fontSize: 16, lineHeight: 1.8, color: BODY, margin: 0 }}>
             The relationship between music and the rise or fall of civilizations is not new. Ancient China's{" "}
             <em>Yue Ji</em> (Record of Music) documented how the corruption of court music preceded dynastic
             collapse. The Roman Empire's shift from disciplined hymns to theatrical spectacle paralleled its moral
@@ -274,7 +306,7 @@ export default function About() {
             invocation. Tibetan, Kurdish, West African, and Indigenous traditions worldwide have long
             understood that certain rhythmic and tonal patterns open gates — and others close them.
           </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "hsl(40, 10%, 72%)", margin: "14px 0 0" }}>
+          <p style={{ fontSize: 16, lineHeight: 1.8, color: BODY, margin: "14px 0 0" }}>
             Western science has only recently caught up. Brainwave entrainment, binaural beat research,
             the documented effects of 432Hz vs. 440Hz tuning systems, the use of infrasound in crowd
             control and mass emotion manipulation — these are not fringe topics. They are peer-reviewed,
@@ -282,11 +314,11 @@ export default function About() {
             Sunday morning — or in their child's headphones — has been engineered with any of these
             techniques in mind.
           </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "hsl(40, 10%, 72%)", margin: "14px 0 0" }}>
+          <p style={{ fontSize: 16, lineHeight: 1.8, color: BODY, margin: "14px 0 0" }}>
             Clear Signal stands on this historical foundation. We are not inventing a theory. We are
             applying what civilizations have understood for millennia to the music being played in
-            churches, homes, and headphones today. The full historical analysis is documented in the
-            Remnant Seed Sound publication, available through Prophet Gad's catalog.
+            churches, homes, and headphones today. The full historical analysis is documented in
+            Prophet Gad's published study of music and the spirit, available through his catalog.
           </p>
         </Section>
 
@@ -310,18 +342,20 @@ export default function About() {
                 style={{
                   background: CARD_BG,
                   border: `1px solid ${BORDER}`,
+                  borderTop: "3px solid hsl(42, 95%, 42%)",
                   borderRadius: 8,
                   padding: "16px 18px",
+                  boxShadow: "0 8px 28px rgba(184,134,11,0.14)",
                 }}
                 data-testid={`card-category-${cat.title.replace(/\s+/g, "-").toLowerCase()}`}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                  <span style={{ fontSize: 18 }}>{cat.icon}</span>
+                  <cat.icon style={{ width: 18, height: 18, color: GOLD, flexShrink: 0 }} strokeWidth={1.75} />
                   <h3
                     style={{
                       fontFamily: ARIAL,
                       fontWeight: 700,
-                      fontSize: 12,
+                      fontSize: 14,
                       color: GOLD,
                       margin: 0,
                       letterSpacing: "0.06em",
@@ -330,7 +364,7 @@ export default function About() {
                     {cat.title}
                   </h3>
                 </div>
-                <p style={{ fontSize: 12, lineHeight: 1.7, color: DIM, margin: 0 }}>{cat.desc}</p>
+                <p style={{ fontSize: 15, lineHeight: 1.7, color: DIM, margin: 0 }}>{cat.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -340,16 +374,18 @@ export default function About() {
         <Section title="Important Notice">
           <div
             style={{
-              background: "hsl(0, 20%, 7%)",
-              border: `1px solid hsl(0, 30%, 18%)`,
+              background: "#ffffff",
+              border: `1px solid ${BORDER}`,
+              borderLeft: "3px solid hsl(350, 72%, 42%)",
               borderRadius: 8,
               padding: "20px 22px",
+              boxShadow: "0 8px 28px rgba(184,134,11,0.12)",
             }}
           >
-            <p style={{ fontSize: 13, lineHeight: 1.85, color: "hsl(40, 8%, 62%)", margin: 0 }}>
-              Clear Signal is a personal discernment tool developed by Prophet Gad under the Remnant
-              Seed Sound framework. Analysis results reflect alignment with this framework's criteria
-              and are provided for personal educational reference only. Clear Signal does
+            <p style={{ fontSize: 15, lineHeight: 1.85, color: DIM, margin: 0 }}>
+              Clear Signal is a personal discernment tool developed by Prophet Gad. Analysis results
+              reflect one simple measure — harmony with heaven, music with nothing in it that offends
+              or manipulates — and are provided for personal educational reference only. Clear Signal does
               not claim legal, scientific, or theological authority over any commercial music product.
               All music remains the intellectual property of its respective owners. No personal data,
               uploaded audio files, or listening history is stored, transmitted, or retained by this
@@ -357,9 +393,10 @@ export default function About() {
             </p>
             <p
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 fontStyle: "italic",
                 color: GOLD,
+                fontWeight: 700,
                 margin: "16px 0 0",
                 textAlign: "center",
                 letterSpacing: "0.04em",
@@ -395,36 +432,39 @@ export default function About() {
               display: "flex",
               alignItems: "center",
               gap: 6,
-              fontSize: 12,
+              fontSize: 14,
+              fontWeight: 700,
               color: GOLD,
-              textDecoration: "none",
+              textDecoration: "underline",
               letterSpacing: "0.06em",
               fontFamily: ARIAL,
             }}
             data-testid="link-remnant-seed-publication"
           >
-            Read the full Remnant Seed Sound publication
-            <ExternalLink style={{ width: 12, height: 12 }} />
+            Read Prophet Gad's full publication on music
+            <ExternalLink style={{ width: 13, height: 13 }} />
           </a>
           <button
             onClick={() => navigate("/")}
             style={{
-              background: "none",
-              border: `1px solid hsl(0, 40%, 22%)`,
-              borderRadius: 4,
-              padding: "7px 22px",
+              background: "#059669",
+              border: `1px solid #047857`,
+              borderRadius: 6,
+              padding: "10px 26px",
               cursor: "pointer",
-              color: "hsl(0, 55%, 55%)",
-              fontSize: 12,
+              color: "#ffffff",
+              fontSize: 14,
+              fontWeight: 700,
               fontFamily: ARIAL,
               letterSpacing: "0.08em",
+              boxShadow: "0 4px 14px rgba(5,150,105,0.32)",
             }}
             data-testid="button-return-analysis"
           >
             Return to Analysis
           </button>
-          <p style={{ fontSize: 10, color: "hsl(40, 6%, 28%)", textAlign: "center", fontFamily: ARIAL, margin: 0 }}>
-            A product of Prophet Gad — Remnant Seed LLC · Thread Bear Studio
+          <p style={{ fontSize: 14, color: "hsl(222, 10%, 30%)", textAlign: "center", fontFamily: ARIAL, margin: 0 }}>
+            A product of Prophet Gad · Thread Bear Studio
           </p>
         </motion.div>
       </main>

@@ -117,3 +117,46 @@ export async function speakGad(text: string, onEnd?: () => void): Promise<void> 
   }
   speakBrowser(text, { rate: 0.75, pitch: 0.6, onEnd });
 }
+
+// ---- Fixed HeyGen voice clips (v2, Jul 30) ----
+// Pre-rendered canon voices live in /audio/. playClip prefers them over TTS;
+// callers fall back to speak* when the clip is missing or fails.
+
+let _currentClip: HTMLAudioElement | null = null;
+
+export function stopClip(): void {
+  if (_currentClip) {
+    _currentClip.pause();
+    _currentClip = null;
+    audioManager.resumeBackground();
+  }
+}
+
+export function playClip(src: string, onEnd?: () => void): Promise<boolean> {
+  return new Promise((resolve) => {
+    stopClip();
+    const audio = new Audio(src);
+    audio.volume = 1.0;
+    let settled = false;
+    const finish = (ok: boolean) => {
+      if (_currentClip === audio) _currentClip = null;
+      audioManager.resumeBackground();
+      if (ok && onEnd) onEnd();
+      if (!settled) { settled = true; resolve(ok); }
+    };
+    audio.oncanplay = () => {
+      audioManager.pauseBackground();
+      _currentClip = audio;
+      audio.play().then(() => { if (!settled) { settled = true; resolve(true); } }).catch(() => finish(false));
+    };
+    audio.onended = () => finish(true);
+    audio.onerror = () => finish(false);
+  });
+}
+
+export const VOICE_CLIPS = {
+  gadWelcome: "/audio/voice_gad_welcome.mp3",
+  gadVerdict: "/audio/voice_gad_verdict.mp3",
+  huldahGuide: "/audio/voice_huldah_guide.mp3",
+  huldahUpload: "/audio/voice_huldah_upload.mp3",
+} as const;
