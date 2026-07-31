@@ -1,6 +1,9 @@
 import { useAppState } from "@/lib/appState";
 import { motion } from "framer-motion";
-const gadSuitImg = "/images/gad-prophet-kid.jpg";
+
+// v2 friendly-Gad doctrine (Jul 30): the finger-raised "prophet kid" image is OUT.
+// The seated breastplate keeper is the one ceremonial face — shown modest, not looming.
+const gadImg = "/images/gad-carousel-1.webp";
 
 export function GadCharacter() {
   const { phase, verdict } = useAppState();
@@ -16,18 +19,27 @@ export function GadCharacter() {
         animate={{
           filter:
             verdict === "ark"
-              ? "drop-shadow(0 0 30px rgba(184,134,11,0.45))"
+              ? "drop-shadow(0 0 24px rgba(184,134,11,0.4))"
               : verdict === "calf"
-              ? "drop-shadow(0 0 10px rgba(0,0,0,0.3))"
-              : "drop-shadow(0 0 15px rgba(184,134,11,0.2))",
+              ? "drop-shadow(0 0 8px rgba(0,0,0,0.2))"
+              : "drop-shadow(0 4px 14px rgba(184,134,11,0.22))",
         }}
         transition={{ duration: 1 }}
       >
         <motion.img
-          src={gadSuitImg}
+          src={gadImg}
           alt="Prophet Gad"
-          className="w-48 sm:w-56 md:w-64 h-auto object-contain select-none rounded-md"
-          style={{ maxHeight: "46vh" }}
+          className="w-28 sm:w-32 md:w-36 select-none"
+          style={{
+            maxHeight: "24vh",
+            borderRadius: "50%",
+            aspectRatio: "1 / 1",
+            objectFit: "cover",
+            objectPosition: "center 12%",
+            border: "3px solid hsl(42, 90%, 45%)",
+            background: "#ffffff",
+            boxShadow: "0 6px 20px rgba(184,134,11,0.25)",
+          }}
           animate={
             phase === "listening"
               ? { scale: 1, rotateY: 0, x: 0 }

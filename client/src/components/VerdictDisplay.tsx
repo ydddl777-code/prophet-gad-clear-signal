@@ -336,6 +336,16 @@ export function VerdictDisplay() {
         >
           The door is open
         </p>
+        <p
+          style={{
+            margin: "4px 0 0",
+            fontSize: 14,
+            textAlign: "center",
+            color: "hsl(222, 10%, 36%)",
+          }}
+        >
+          These rooms open in a new tab &mdash; Clear Signal stays right here for you.
+        </p>
         <a
           href="https://pgfc.ai"
           target="_blank"

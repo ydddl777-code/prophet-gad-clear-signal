@@ -14,15 +14,15 @@ const sections = [
     scriptures: [
       {
         ref: "1 Chronicles 21:9",
-        text: "And the Lord spoke to Gad, David\u2019s seer, saying...",
+        text: "And the LORD spake unto Gad, David\u2019s seer, saying...",
       },
       {
         ref: "2 Samuel 24:11",
-        text: "The word of the Lord came to the prophet Gad, David\u2019s seer.",
+        text: "For when David was up in the morning, the word of the LORD came unto the prophet Gad, David\u2019s seer.",
       },
       {
         ref: "1 Samuel 22:5",
-        text: "The prophet Gad said to David, \u2018Do not remain in the stronghold; depart, and go into the land of Judah.\u2019",
+        text: "And the prophet Gad said unto David, Abide not in the hold; depart, and get thee into the land of Judah.",
       },
     ],
     summary: "Not a priest. Not a scribe. A soldier with a word.",
@@ -32,21 +32,21 @@ const sections = [
     scriptures: [
       {
         ref: "1 Chronicles 25:1",
-        text: "David, together with the commanders of the army, set apart for the service the sons of Asaph, Heman, and Jeduthun, who prophesied with lyres, harps, and cymbals.",
+        text: "Moreover David and the captains of the host separated to the service of the sons of Asaph, and of Heman, and of Jeduthun, who should prophesy with harps, with psalteries, and with cymbals.",
       },
     ],
-    summary: "With Asaph and Heman, he was connected to ordered music, disciplined sound, and public responsibility.",
+    summary: "Ordered music. Disciplined sound. Appointed men, named and accountable \u2014 this was the standard of the sanctuary.",
   },
   {
     title: "From the Tribe of Warriors",
     scriptures: [
       {
         ref: "Joshua 4:12",
-        text: "The men of Reuben, Gad, and the half-tribe of Manasseh crossed over, armed before the Israelites...",
+        text: "And the children of Reuben, and the children of Gad, and half the tribe of Manasseh, passed over armed before the children of Israel, as Moses spake unto them.",
       },
       {
         ref: "1 Chronicles 12:8",
-        text: "From the Gadites there went over to David mighty men of valor, men trained for battle, who could handle shield and spear.",
+        text: "And of the Gadites there separated themselves unto David... men of might, and men of war fit for the battle, that could handle shield and buckler, whose faces were like the faces of lions.",
       },
     ],
     summary: "They crossed first. They fought first. They praised first.",
@@ -69,7 +69,7 @@ export function ScriptureDialog() {
       <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle
-            className="font-serif text-lg"
+            className="font-serif text-xl"
             style={{ color: "hsl(43, 89%, 30%)" }}
           >
             About Prophet Gad
@@ -79,7 +79,7 @@ export function ScriptureDialog() {
           {sections.map((section) => (
             <div key={section.title} className="flex flex-col gap-2">
               <h3
-                className="font-serif text-sm font-bold tracking-wide"
+                className="font-serif text-base font-bold tracking-wide"
                 style={{ color: "hsl(270, 40%, 40%)" }}
               >
                 {section.title}
@@ -88,13 +88,13 @@ export function ScriptureDialog() {
               {section.scriptures.map((s) => (
                 <div key={s.ref} className="flex flex-col gap-0.5">
                   <span
-                    className="text-xs font-medium tracking-wide"
+                    className="text-sm font-bold tracking-wide"
                     style={{ color: "hsl(43, 89%, 28%)" }}
                   >
                     {s.ref}
                   </span>
                   <p
-                    className="text-sm text-foreground/80 leading-relaxed"
+                    className="text-[15px] text-foreground leading-relaxed"
                     data-testid={`text-scripture-${s.ref.replace(/\s/g, "-")}`}
                   >
                     {s.text}
@@ -103,7 +103,7 @@ export function ScriptureDialog() {
               ))}
 
               <p
-                className="text-sm italic leading-relaxed mt-1"
+                className="text-[15px] italic leading-relaxed mt-1"
                 style={{ color: "hsl(30, 20%, 35%)" }}
               >
                 {section.summary}
@@ -114,13 +114,13 @@ export function ScriptureDialog() {
           ))}
 
           <p
-            className="text-sm font-serif italic text-center leading-relaxed"
+            className="text-[15px] font-serif italic text-center leading-relaxed"
             style={{ color: "hsl(270, 30%, 40%)" }}
             data-testid="text-scripture-closing"
           >
             Historical office. Disciplined sound. Clear signal.
             <br />
-            The analysis applies the same criteria to every nation.
+            The full teaching is given in Prophet Gad\u2019s published volumes \u2014 the analysis here applies the same criteria to every nation.
           </p>
         </div>
       </DialogContent>
