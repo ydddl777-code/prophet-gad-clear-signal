@@ -15,8 +15,10 @@ const GAD_PHOTOS: { src: string; alt: string; fit?: "contain" | "cover" }[] = [
   // v2 friendly-Gad doctrine (Jul 30): seated breastplate = the one ceremonial keeper;
   // warm/smiling Gad and the Gad & Huldah portrait carry the "come one and all" invitation.
   // Removed: full-regalia paramilitary shot, sunglasses shot, somber tuxedo shot.
+  // Aug 3: younger beach shot (gad-carousel-5) swapped out for two new formal portraits.
   { src: "/images/gad-carousel-1.webp", alt: "Prophet Gad, breastplate of the twelve tribes" },
-  { src: "/images/gad-carousel-5.webp", alt: "Prophet Gad, welcoming every nation" },
+  { src: "/images/gad-portrait-tux.png", alt: "Prophet Gad in black velvet tuxedo" },
+  { src: "/images/gad-portrait-suit.png", alt: "Prophet Gad in black suit" },
   { src: "/images/gad-carousel-6.webp", alt: "Prophet Gad and Prophetess Huldah" },
 ];
 
@@ -81,7 +83,7 @@ export function GreetingFlow() {
     onSelect();
     carouselApi.on("select", onSelect);
 
-    const autoplay = setInterval(() => carouselApi.scrollNext(), 4500);
+    const autoplay = setInterval(() => carouselApi.scrollNext(), 7000);
 
     return () => {
       carouselApi.off("select", onSelect);
