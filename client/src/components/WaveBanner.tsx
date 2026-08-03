@@ -1,4 +1,3 @@
-const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
 
 // Deterministic bar heights — a lively, symmetric waveform.
 const BAR_COUNT = 88;
@@ -90,39 +89,6 @@ export function WaveBanner() {
         />
       </svg>
 
-      {/* Soft white halo behind the text so it reads over the bars */}
-      <span
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "72%",
-          height: 34,
-          background:
-            "radial-gradient(ellipse at center, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.75) 55%, rgba(255,255,255,0) 100%)",
-          pointerEvents: "none",
-        }}
-      />
-
-      <p
-        style={{
-          position: "relative",
-          zIndex: 2,
-          fontFamily: ARIAL,
-          fontSize: "clamp(12px, 2.2vw, 14px)",
-          fontWeight: "bold",
-          letterSpacing: "0.24em",
-          textTransform: "uppercase",
-          color: "hsl(352, 70%, 33%)",
-          textShadow: "0 1px 6px rgba(255,255,255,0.95)",
-          margin: 0,
-          padding: "0 8px",
-        }}
-      >
-        Music Discernment · For All Nations
-      </p>
     </div>
   );
 }
