@@ -121,7 +121,11 @@ export function GreetingFlow() {
       >
         <LionMark />
 
-        {/* Center block — title stays truly centered; BETA badge floats beside it */}
+        {/* Center block — title stays truly centered.
+            Note: the BETA badge that used to float beside the title was
+            removed here now that real monetization (Stripe checkout for
+            the Remnant Warning ebook) is live — this is no longer a beta
+            product. */}
         <div style={{ textAlign: "center", flex: 1, minWidth: 0 }}>
           <div style={{ position: "relative", display: "inline-block" }}>
             <h1
@@ -142,26 +146,6 @@ export function GreetingFlow() {
             >
               Clear Signal
             </h1>
-            <span
-              style={{
-                position: "absolute",
-                left: "100%",
-                top: -2,
-                marginLeft: 8,
-                fontSize: 9,
-                fontWeight: 700,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "hsl(270, 55%, 32%)",
-                background: "hsl(270, 40%, 94%)",
-                border: "1px solid hsl(270, 30%, 70%)",
-                borderRadius: 4,
-                padding: "2px 6px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              BETA
-            </span>
           </div>
           <p
             style={{

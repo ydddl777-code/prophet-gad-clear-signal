@@ -5,6 +5,11 @@ server/public
 vite.config.ts.*
 *.tar.gz
 
+# Scratch folder from a Claude Code sandbox test of the Stripe/PDF book
+# generator (2026-07-31) — safe to delete by hand, harmless if left, never
+# to be committed.
+_test_scratch/
+
 # Environment / secrets - never commit API keys (ElevenLabs etc.)
 .env
 .env.*

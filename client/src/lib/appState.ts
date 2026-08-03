@@ -47,6 +47,13 @@ export type AnalysisData = {
   rhythmicArchetype: AnalysisCategory;
 };
 
+// ── Minimum "Gad listens" duration ────────────────────────────────────────────
+// Enforced floor so the verdict never feels perfunctory: at least 45s, scaled
+// to 25% of the track's length for longer songs, capped at 120s so nobody
+// waits more than two minutes. Default (45) covers flows where the track's
+// duration isn't known yet (e.g. before audio metadata loads).
+export const DEFAULT_MIN_LISTEN_SECONDS = 45;
+
 interface AppState {
   userName: string;
   ageMode: AgeMode;
@@ -57,6 +64,7 @@ interface AppState {
   songFileName: string;
   audioFileUrl: string | null;
   analysisData: AnalysisData | null;
+  minListenSeconds: number;
   setUserName: (name: string) => void;
   setAgeMode: (mode: AgeMode) => void;
   setPhase: (phase: AppPhase) => void;
@@ -66,6 +74,7 @@ interface AppState {
   setSongFileName: (name: string) => void;
   setAudioFileUrl: (url: string | null) => void;
   setAnalysisData: (data: AnalysisData | null) => void;
+  setMinListenSeconds: (seconds: number) => void;
   reset: () => void;
 }
 
@@ -79,6 +88,7 @@ export const useAppState = create<AppState>((set) => ({
   songFileName: "",
   audioFileUrl: null,
   analysisData: null,
+  minListenSeconds: DEFAULT_MIN_LISTEN_SECONDS,
   setUserName: (name) => set({ userName: name }),
   setAgeMode: (mode) => set({ ageMode: mode, isKidMode: mode === "kid" }),
   setPhase: (phase) => set({ phase }),
@@ -88,6 +98,7 @@ export const useAppState = create<AppState>((set) => ({
   setSongFileName: (name) => set({ songFileName: name }),
   setAudioFileUrl: (url) => set({ audioFileUrl: url }),
   setAnalysisData: (data) => set({ analysisData: data }),
+  setMinListenSeconds: (seconds) => set({ minListenSeconds: seconds }),
   reset: () =>
     set({
       userName: "",
@@ -98,5 +109,6 @@ export const useAppState = create<AppState>((set) => ({
       songFileName: "",
       audioFileUrl: null,
       analysisData: null,
+      minListenSeconds: DEFAULT_MIN_LISTEN_SECONDS,
     }),
 }));

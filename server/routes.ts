@@ -1,6 +1,13 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
+import type Stripe from "stripe";
+import {
+  getStripeClient,
+  getBookPriceId,
+  getBookPriceUsdCents,
+} from "./lib/stripe";
+import { generateRemnantWarningPdf } from "./lib/bookPdf";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -291,6 +298,121 @@ export async function registerRoutes(
     } catch (err) {
       console.error("TTS fetch error:", err);
       res.status(500).json({ error: "TTS request failed" });
+    }
+  });
+
+  // ── Remnant Warning ebook — Stripe Checkout ──────────────────────────────
+  // Real one-time-purchase flow. Requires STRIPE_SECRET_KEY to be set in the
+  // environment (Vercel project settings); until then these routes respond
+  // 503 so the client can fall back gracefully instead of crashing.
+
+  app.post("/api/checkout/book-session", async (req, res) => {
+    const stripe = getStripeClient();
+    if (!stripe) {
+      return res.status(503).json({ error: "Payments are not configured yet." });
+    }
+    try {
+      const origin =
+        (req.headers.origin as string | undefined) ||
+        `${req.protocol}://${req.get("host")}`;
+
+      const priceId = getBookPriceId();
+      const lineItem: Stripe.Checkout.SessionCreateParams.LineItem = priceId
+        ? { price: priceId, quantity: 1 }
+        : {
+            quantity: 1,
+            price_data: {
+              currency: "usd",
+              unit_amount: getBookPriceUsdCents(),
+              product_data: {
+                name: "Remnant Warning: No Contemporary Worship Music for the Israelites",
+                description:
+                  "The full companion ebook to Clear Signal — Prophet Gad Speaks series, Volume 1.",
+              },
+            },
+          };
+
+      const session = await stripe.checkout.sessions.create({
+        mode: "payment",
+        line_items: [lineItem],
+        success_url: `${origin}/?book_session_id={CHECKOUT_SESSION_ID}#book-ready`,
+        cancel_url: `${origin}/?book_cancelled=1`,
+      });
+
+      res.json({ url: session.url });
+    } catch (err) {
+      console.error("Stripe session creation failed:", err);
+      res.status(500).json({ error: "Could not start checkout." });
+    }
+  });
+
+  // Success-redirect delivery. The client lands back on "/" with
+  // ?book_session_id=... and calls this endpoint to fetch the PDF. Payment
+  // status is re-verified directly with Stripe on every request (this app
+  // has no database to persist a fulfillment record), so the download link
+  // can be reused safely as long as the underlying Checkout Session is paid.
+  app.get("/api/book/download", async (req, res) => {
+    const stripe = getStripeClient();
+    if (!stripe) {
+      return res.status(503).json({ error: "Payments are not configured yet." });
+    }
+    const sessionId = req.query.session_id;
+    if (!sessionId || typeof sessionId !== "string") {
+      return res.status(400).json({ error: "Missing session_id" });
+    }
+    try {
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      if (session.payment_status !== "paid") {
+        return res.status(402).json({ error: "Payment not confirmed for this session." });
+      }
+      const pdf = generateRemnantWarningPdf();
+      res.set("Content-Type", "application/pdf");
+      res.set(
+        "Content-Disposition",
+        'attachment; filename="Remnant-Warning-No-Contemporary-Worship-Music.pdf"'
+      );
+      res.set("Cache-Control", "no-store");
+      res.send(pdf);
+    } catch (err) {
+      console.error("Book download verification failed:", err);
+      res.status(500).json({ error: "Could not verify purchase." });
+    }
+  });
+
+  // Stripe webhook — signature-verified fulfillment log. Not required for
+  // delivery (the success-redirect path above re-verifies and serves the
+  // PDF directly on its own), but present so Adlai has a durable, tamper-
+  // proof record of confirmed payments and a hook point for future email
+  // delivery/receipts. Requires STRIPE_WEBHOOK_SECRET.
+  app.post("/api/webhook/stripe", async (req, res) => {
+    const stripe = getStripeClient();
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    if (!stripe || !webhookSecret) {
+      return res.status(503).json({ error: "Webhook not configured." });
+    }
+    const signature = req.headers["stripe-signature"];
+    if (!signature || typeof signature !== "string") {
+      return res.status(400).json({ error: "Missing Stripe signature." });
+    }
+    try {
+      const rawBody = req.rawBody as Buffer;
+      const event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+      if (event.type === "checkout.session.completed") {
+        const session = event.data.object as Stripe.Checkout.Session;
+        console.log(
+          `[stripe] Remnant Warning purchase confirmed — session ${session.id}, ` +
+            `amount ${session.amount_total} ${session.currency}, ` +
+            `email ${session.customer_details?.email ?? "unknown"}`
+        );
+        // No database in this app today. If Adlai wants an email receipt or
+        // a durable purchase log, this is the place to call an email API
+        // (e.g. Resend/SendGrid) or write to a datastore. See the work-
+        // product report for details.
+      }
+      res.json({ received: true });
+    } catch (err) {
+      console.error("Stripe webhook signature verification failed:", err);
+      res.status(400).json({ error: "Invalid signature." });
     }
   });
 

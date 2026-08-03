@@ -157,6 +157,7 @@ export function playClip(src: string, onEnd?: () => void): Promise<boolean> {
 export const VOICE_CLIPS = {
   gadWelcome: "/audio/voice_gad_welcome.mp3",
   gadVerdict: "/audio/voice_gad_verdict.mp3",
+  gadOpenDoor: "/audio/voice_gad_opendoor.mp3",
   huldahGuide: "/audio/voice_huldah_guide.mp3",
   huldahUpload: "/audio/voice_huldah_upload.mp3",
 } as const;

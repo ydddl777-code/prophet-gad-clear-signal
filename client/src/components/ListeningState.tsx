@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useAppState } from "@/lib/appState";
+import { useAppState, DEFAULT_MIN_LISTEN_SECONDS } from "@/lib/appState";
 import { motion } from "framer-motion";
 import { Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,11 +22,15 @@ const STATUS_MESSAGES = [
   "Final calibration in progress...",
 ];
 
-const TOTAL_DURATION = 120;
+// The visible "Gad listens" timer mirrors the actual enforced minimum
+// analysis duration (max(45s, 25% of track length), capped at 120s) set by
+// UploadZone via setMinListenSeconds, so the progress bar always finishes
+// right as the verdict becomes available.
 
 function useBrainwaveCanvas(
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
-  elapsed: number
+  elapsed: number,
+  totalDuration: number
 ) {
   const animFrameRef = useRef<number>(0);
   const offsetRef = useRef(0);
@@ -54,7 +58,7 @@ function useBrainwaveCanvas(
 
       offsetRef.current += 1.2;
 
-      const progress = elapsed / TOTAL_DURATION;
+      const progress = elapsed / totalDuration;
       const segments = 6;
       const segWidth = w / segments;
 
@@ -141,11 +145,12 @@ function useBrainwaveCanvas(
       cancelAnimationFrame(animFrameRef.current);
       window.removeEventListener("resize", resize);
     };
-  }, [canvasRef, elapsed]);
+  }, [canvasRef, elapsed, totalDuration]);
 }
 
 export function ListeningState() {
-  const { phase, songFileName, audioFileUrl, voiceEnabled } = useAppState();
+  const { phase, songFileName, audioFileUrl, voiceEnabled, minListenSeconds } = useAppState();
+  const totalDuration = minListenSeconds || DEFAULT_MIN_LISTEN_SECONDS;
   const [elapsed, setElapsed] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
@@ -153,7 +158,7 @@ export function ListeningState() {
   const [statusIndex, setStatusIndex] = useState(0);
   const hudlahSpokenRef = useRef(false);
 
-  useBrainwaveCanvas(canvasRef, elapsed);
+  useBrainwaveCanvas(canvasRef, elapsed, totalDuration);
 
   useEffect(() => {
     if (phase !== "listening") {
@@ -176,14 +181,14 @@ export function ListeningState() {
 
       const stopTimer = setTimeout(() => {
         audio.pause();
-      }, TOTAL_DURATION * 1000);
+      }, totalDuration * 1000);
 
       return () => {
         clearTimeout(stopTimer);
         audio.pause();
       };
     }
-  }, [phase, audioFileUrl]);
+  }, [phase, audioFileUrl, totalDuration]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -198,11 +203,11 @@ export function ListeningState() {
     }
 
     const interval = setInterval(() => {
-      setElapsed((prev) => Math.min(prev + 1, TOTAL_DURATION));
+      setElapsed((prev) => Math.min(prev + 1, totalDuration));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [phase]);
+  }, [phase, totalDuration]);
 
   useEffect(() => {
     if (phase !== "listening") return;
@@ -226,11 +231,11 @@ export function ListeningState() {
 
   if (phase !== "listening") return null;
 
-  const progress = (elapsed / TOTAL_DURATION) * 100;
-  const minutesLeft = Math.floor((TOTAL_DURATION - elapsed) / 60);
-  const secondsLeft = (TOTAL_DURATION - elapsed) % 60;
+  const progress = (elapsed / totalDuration) * 100;
+  const minutesLeft = Math.floor((totalDuration - elapsed) / 60);
+  const secondsLeft = (totalDuration - elapsed) % 60;
   const timeLabel =
-    elapsed < TOTAL_DURATION
+    elapsed < totalDuration
       ? `${minutesLeft}:${String(secondsLeft).padStart(2, "0")} remaining`
       : "Analysis complete...";
 

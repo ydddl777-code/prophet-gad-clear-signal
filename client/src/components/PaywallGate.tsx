@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { resetTrial, TRIAL_LIMIT } from "@/lib/appState";
+import { BookOffer } from "@/components/BookOffer";
 
 const ARIAL = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
 const GOLD = "hsl(42, 95%, 34%)";
@@ -232,6 +233,15 @@ export function PaywallGate({ onClose }: Props) {
         <p style={{ fontSize: 11, color: "hsl(222,10%,36%)", margin: 0, lineHeight: 1.5 }}>
           No spam. No third-party sharing. For the remnant only.
         </p>
+
+        {/* Real paid product, offered alongside the free-trial unlock above —
+            not a replacement for it. The email unlock stays as a no-friction
+            lead-capture path; this is for anyone ready to go deeper right now. */}
+        <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, transparent, rgba(184,134,11,0.4), transparent)" }} />
+        <p style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "hsl(222, 10%, 46%)", margin: 0, fontWeight: 700 }}>
+          Or go deeper
+        </p>
+        <BookOffer compact />
       </motion.div>
     </motion.div>
   );

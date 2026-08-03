@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Award, RotateCcw, Download, HeartHandshake, BookOpen, ExternalLink } from "lucide-react";
 import { generateCertificate } from "@/lib/certificate";
 import { speakElevenLabs, speakBrowser, playClip, VOICE_CLIPS } from "@/lib/tts";
+import { BookOffer } from "@/components/BookOffer";
 
 function ScoreGauge({ score }: { score: number }) {
   const isHigh = score >= 70;
@@ -406,6 +407,16 @@ export function VerdictDisplay() {
           </span>
           <ExternalLink style={{ width: 14, height: 14, color: "hsl(222, 10%, 38%)", marginLeft: "auto", flexShrink: 0 }} />
         </a>
+      </motion.div>
+
+      {/* The real paid product — the full companion book behind this analysis. */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2.4 }}
+        className="w-full"
+      >
+        <BookOffer />
       </motion.div>
     </motion.div>
   );

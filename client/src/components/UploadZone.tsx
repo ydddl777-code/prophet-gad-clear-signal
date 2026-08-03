@@ -1,11 +1,52 @@
 import { useCallback, useState, useRef, type CSSProperties } from "react";
-import { useAppState, decrementTrial, isTrialExhausted } from "@/lib/appState";
+import { useAppState, decrementTrial, isTrialExhausted, DEFAULT_MIN_LISTEN_SECONDS } from "@/lib/appState";
 import { Upload, Music, Link, Search, ExternalLink } from "lucide-react";
 import { PaywallGate } from "@/components/PaywallGate";
 import { motion } from "framer-motion";
 import type { AnalysisData } from "@/lib/appState";
 
-const LISTENING_DURATION = 8000; // 8 seconds — enough for the listening animation
+// ── Minimum "Gad listens" duration ────────────────────────────────────────────
+// The verdict must never render before Gad has genuinely "listened" for a
+// meaningful stretch: at least 45s, scaled up to 25% of the track's total
+// length for longer songs, but never more than 120s (2 minutes) so nobody
+// waits forever on a long track.
+const MIN_LISTEN_SECONDS = DEFAULT_MIN_LISTEN_SECONDS; // 45s floor
+const MAX_LISTEN_SECONDS = 120; // 2 minute cap
+
+function getMinListenDurationMs(trackDurationSeconds: number | null): number {
+  if (!trackDurationSeconds || !isFinite(trackDurationSeconds) || trackDurationSeconds <= 0) {
+    // Duration unknown (e.g. a linked/searched track we never actually loaded) —
+    // fall back to the floor rather than guessing.
+    return MIN_LISTEN_SECONDS * 1000;
+  }
+  const scaled = trackDurationSeconds * 0.25;
+  const bounded = Math.min(MAX_LISTEN_SECONDS, Math.max(MIN_LISTEN_SECONDS, scaled));
+  return bounded * 1000;
+}
+
+// Reads a track's duration from its audio metadata (HTML5 Audio element),
+// resolving null if it can't be determined so callers can fall back to the floor.
+function probeAudioDurationSeconds(url: string): Promise<number | null> {
+  return new Promise((resolve) => {
+    const probe = new Audio();
+    const cleanup = () => {
+      probe.removeEventListener("loadedmetadata", onLoaded);
+      probe.removeEventListener("error", onError);
+    };
+    const onLoaded = () => {
+      const duration = probe.duration;
+      cleanup();
+      resolve(isFinite(duration) && duration > 0 ? duration : null);
+    };
+    const onError = () => {
+      cleanup();
+      resolve(null);
+    };
+    probe.addEventListener("loadedmetadata", onLoaded);
+    probe.addEventListener("error", onError);
+    probe.src = url;
+  });
+}
 
 // Inline structural styles mirror the Tailwind classes so the layout
 // holds its shape even if the utility CSS pipeline fails to load.
@@ -87,6 +128,7 @@ export function UploadZone() {
     setSongFileName,
     setAudioFileUrl,
     setAnalysisData,
+    setMinListenSeconds,
     phase,
   } = useAppState();
   const [isDragging, setIsDragging] = useState(false);
@@ -118,6 +160,10 @@ export function UploadZone() {
 
       const listeningStart = Date.now();
 
+      // Kick off the real track-duration probe alongside the analysis request
+      // so we don't add extra sequential delay — both run concurrently.
+      const durationPromise = probeAudioDurationSeconds(objectUrl);
+
       let analysisResult: { verdict: "ark" | "calf"; signalClarityScore?: number; analysis?: AnalysisData } = {
         verdict: "ark",
       };
@@ -137,8 +183,12 @@ export function UploadZone() {
         };
       }
 
+      const trackDurationSeconds = await durationPromise;
+      const minListenDurationMs = getMinListenDurationMs(trackDurationSeconds);
+      setMinListenSeconds(minListenDurationMs / 1000);
+
       const elapsed = Date.now() - listeningStart;
-      const remaining = LISTENING_DURATION - elapsed;
+      const remaining = minListenDurationMs - elapsed;
       if (remaining > 0) {
         await new Promise((r) => setTimeout(r, remaining));
       }
@@ -153,7 +203,7 @@ export function UploadZone() {
       setVerdict(analysisResult.verdict);
       setPhase("result");
     },
-    [setPhase, setVerdict, setSongFileName, setAudioFileUrl, setAnalysisData]
+    [setPhase, setVerdict, setSongFileName, setAudioFileUrl, setAnalysisData, setMinListenSeconds]
   );
 
   const handleLinkSubmit = useCallback(async () => {
@@ -170,6 +220,11 @@ export function UploadZone() {
     setAudioFileUrl(null);
     setPhase("listening");
 
+    // No local audio to probe for a linked track, so we can't know its real
+    // duration — fall back to the 45s floor rather than guessing.
+    const minListenDurationMs = getMinListenDurationMs(null);
+    setMinListenSeconds(minListenDurationMs / 1000);
+
     const listeningStart = Date.now();
     await new Promise((r) => setTimeout(r, 2000));
 
@@ -177,7 +232,7 @@ export function UploadZone() {
     const score = verdict === "ark" ? 55 + Math.floor(Math.random() * 40) : 10 + Math.floor(Math.random() * 38);
 
     const elapsed = Date.now() - listeningStart;
-    const remaining = LISTENING_DURATION - elapsed;
+    const remaining = minListenDurationMs - elapsed;
     if (remaining > 0) await new Promise((r) => setTimeout(r, remaining));
 
     setAnalysisData({
@@ -192,7 +247,7 @@ export function UploadZone() {
 
     setVerdict(verdict);
     setPhase("result");
-  }, [linkInput, setSongFileName, setAudioFileUrl, setPhase, setVerdict, setAnalysisData]);
+  }, [linkInput, setSongFileName, setAudioFileUrl, setPhase, setVerdict, setAnalysisData, setMinListenSeconds]);
 
   const handleSearchSubmit = useCallback(async () => {
     // HARD GATE: no verdict without an actual search entry.
@@ -207,6 +262,11 @@ export function UploadZone() {
     setAudioFileUrl(null);
     setPhase("listening");
 
+    // No local audio to probe for a searched track either — fall back to the
+    // 45s floor rather than guessing at a duration.
+    const minListenDurationMs = getMinListenDurationMs(null);
+    setMinListenSeconds(minListenDurationMs / 1000);
+
     const listeningStart = Date.now();
     await new Promise((r) => setTimeout(r, 1500));
 
@@ -214,7 +274,7 @@ export function UploadZone() {
     const score = verdict === "ark" ? 55 + Math.floor(Math.random() * 40) : 10 + Math.floor(Math.random() * 38);
 
     const elapsed = Date.now() - listeningStart;
-    const remaining = LISTENING_DURATION - elapsed;
+    const remaining = minListenDurationMs - elapsed;
     if (remaining > 0) await new Promise((r) => setTimeout(r, remaining));
 
     setAnalysisData({
@@ -229,7 +289,7 @@ export function UploadZone() {
 
     setVerdict(verdict);
     setPhase("result");
-  }, [searchInput, setSongFileName, setAudioFileUrl, setPhase, setVerdict, setAnalysisData]);
+  }, [searchInput, setSongFileName, setAudioFileUrl, setPhase, setVerdict, setAnalysisData, setMinListenSeconds]);
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
