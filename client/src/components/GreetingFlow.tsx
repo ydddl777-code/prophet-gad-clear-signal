@@ -158,7 +158,7 @@ export function GreetingFlow() {
               margin: "3px 0 0",
             }}
           >
-            PGAI - Remnant Seed LLC
+            Music Discernment · For All Nations
           </p>
         </div>
 
@@ -299,6 +299,63 @@ export function GreetingFlow() {
               judgment. I am Huldah, and I am here to guide you.&rdquo;
             </p>
           </div>
+        </div>
+
+        <div
+          style={{
+            maxWidth: 560,
+            width: "100%",
+            background: "#ffffff",
+            border: "1px solid hsl(220, 15%, 88%)",
+            borderTop: "3px solid hsl(42, 95%, 42%)",
+            borderRadius: 8,
+            padding: "16px 18px",
+            boxShadow: "0 8px 28px rgba(184,134,11,0.16)",
+          }}
+          data-testid="what-clear-signal-does"
+        >
+          <div
+            style={{
+              fontSize: 12,
+              fontWeight: 800,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: GOLD_DEEP,
+              marginBottom: 10,
+            }}
+          >
+            What Clear Signal Does
+          </div>
+          <ul
+            style={{
+              margin: 0,
+              paddingLeft: 20,
+              color: INK,
+              fontSize: 15,
+              lineHeight: 1.65,
+              fontFamily: ARIAL,
+            }}
+          >
+            <li style={{ marginBottom: 7 }}>
+              It is a <strong>music discernment app</strong> — submit any song (upload, link, or
+              search); it tests the sound in about two minutes.
+            </li>
+            <li style={{ marginBottom: 7 }}>
+              Flags <strong>mood-altering rhythms</strong> and hypnotic, repetitive loops built to
+              bypass judgment.
+            </li>
+            <li style={{ marginBottom: 7 }}>
+              Measures <strong>tempo and BPM</strong> that push the body into a trance state instead
+              of rest.
+            </li>
+            <li style={{ marginBottom: 7 }}>
+              Reads the <strong>lyrical signal</strong> — what a song names, teaches, and points you
+              toward.
+            </li>
+            <li style={{ marginBottom: 0 }}>
+              Scores the <strong>neurological impact</strong> and returns one clear verdict (0–100).
+            </li>
+          </ul>
         </div>
 
         <p

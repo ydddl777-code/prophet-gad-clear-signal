@@ -9,7 +9,6 @@ import { ListeningState } from "@/components/ListeningState";
 import { VerdictDisplay } from "@/components/VerdictDisplay";
 import { ScriptureDialog } from "@/components/ScriptureDialog";
 import { ControlToggles } from "@/components/ControlToggles";
-import { BackgroundPlayer } from "@/components/BackgroundPlayer";
 import { NavArrows } from "@/components/NavArrows";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -175,8 +174,6 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <BackgroundPlayer />
     </div>
   );
 }
